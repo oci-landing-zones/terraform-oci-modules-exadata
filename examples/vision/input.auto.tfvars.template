@@ -1,0 +1,81 @@
+# Copyright (c) 2025 Oracle and/or its affiliates.
+# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+
+#--------------------------------------------------------------------------------------------------------------------------------------
+# 1. Rename this file to <project-name>.auto.tfvars, where <project-name> is a name of your choice.
+# 2. Provide values for "Tenancy Connectivity Variables".
+# 3. Replace <REPLACE-BY-*> placeholders with appropriate values.
+#--------------------------------------------------------------------------------------------------------------------------------------
+
+#---------------------------------------
+# Tenancy Connectivity Variables
+#---------------------------------------
+
+tenancy_ocid         = "ocid1.tenancy.oc1.." # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
+user_ocid            = "ocid1.user.oc1.."    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
+fingerprint          = ""                    # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
+private_key_path     = ""                    # This is the full path on your local system to the API signing private key.
+private_key_password = ""                    # This is the password that protects the private key, if any.
+region               = "me-riyadh-1"         # The region name.
+
+
+#---------------------------------------
+# Input variable
+#---------------------------------------
+compartments_dependency = {
+  CMP-1 = {
+    id = "ocid1.compartment.oc1..aaaaaaaagqr3yr7sejgh2hhcvaafem3baziprkbvdrt5qpckgorj4ut7xd2a"
+  }
+}
+
+network_dependency = {
+  SUB-1 = {
+    id = "ocid1.onssubscription.oc1.me-riyadh-1.aaaaaaaa3z4da2uoajzu26zqv4a5cnrmysdnj34kmde3rpyo65sf6sny7cvq"
+  }
+}
+default_compartment_id = "CMP-1"
+default_freeform_tags  = {}
+default_defined_tags   = {}
+
+exadata_infrastructures = {
+  default_maintenance_window = {
+    preference                    = "NO_PREFERENCE"
+    months                        = ["JANUARY"]
+    weeks_of_month                = ["2"]
+    custom_action_timeout_in_mins = "0"
+    hours_of_day                  = ["0", "4"]
+
+    pathing_mode = "ROLLING"
+  }
+
+  exadata_infrastructure_config = {
+    "My-Exadata-Infra-3" = {
+      display_name = "My-Exadata-Infra-3"
+      shape        = "Exadata.X11M"
+
+      compute_count = 2
+      storage_count = 3
+      customer_contacts = {
+        email = "niya.m.ma@oracle.com"
+      }
+      customer_contacts = {
+        email = "niya.m2.ma@oracle.com"
+      }
+      database_server_type = "X11M"
+
+      maintenance_window = {
+        preference                    = "NO_PREFERENCE"
+        months                        = ["MAY"]
+        weeks_of_month                = ["2"]
+        custom_action_timeout_in_mins = "0"
+        hours_of_day                  = ["0", "4"]
+
+        pathing_mode = "ROLLING"
+      }
+
+      storage_server_type = "X11M-HC"
+      subscription_id     = "SUB-1"
+    }
+  }
+}
+
