@@ -28,3 +28,7 @@ variable "exadata_infrastructures" {
   type    = any
   default = null
 }
+variable "vm_clusters" {
+  type    = any
+  default = null
+}

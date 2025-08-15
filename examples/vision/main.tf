@@ -4,10 +4,10 @@
 module "vision_exadata" {
   source                  = "../.."
   exadata_infrastructures = var.exadata_infrastructures
+  vm_clusters             = var.vm_clusters
   compartments_dependency = var.compartments_dependency
   network_dependency      = var.network_dependency
   default_compartment_id  = var.default_compartment_id
   default_defined_tags    = var.default_defined_tags
   default_freeform_tags   = var.default_freeform_tags
-
 }
