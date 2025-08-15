@@ -126,69 +126,75 @@ variable "exadata_infrastructures" {
   }
 }
 
-# variable "vm_cluster_config" {
-#   description = "OCI Database Cloud VM Cluster Configuration."
-#   type = map(object({
-#     # Attributes for oci_database_cloud_vm_cluster (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_vm_cluster)
-#     backup_subnet_id = string # Literal OCID or key in network_dependency
+variable "vm_clusters" {
+  description = "OCI Database Cloud VM Cluster Configuration."
+  type = map(object({
+    # Attributes for oci_database_cloud_vm_cluster (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_vm_cluster)
+    backup_subnet_id = string # Literal OCID or key in network_dependency
 
-#     database_cloud_exadata_infrastructure_id = string           # OCID or key of the database cloud exadata infrastructure.
-#     compartment_id                           = optional(string) # Overrides default; literal OCID or key in compartments_dependency
-#     cpu_core_count                           = number
-#     display_name                             = string
-#     gi_version                               = string # e.g., "19.0.0.0"
-#     hostname                                 = string
-#     ssh_public_keys                          = list(string)
-#     subnet_id                                = string # Literal OCID or key in network_dependency
+    exadata_infrastructure_id = string           # OCID or key of the database cloud exadata infrastructure.
+    compartment_id            = optional(string) # Overrides default; literal OCID or key in compartments_dependency
+    cpu_core_count            = number
+    display_name              = string
+    gi_version                = string # e.g., "19.0.0.0"
+    hostname                  = string
+    ssh_public_keys           = list(string)
+    subnet_id                 = string # Literal OCID or key in network_dependency
 
-#     backup_network_nsg_ids = optional(list(string)) # Literal OCIDs or keys in network_dependency
-#     cloud_automation_update_detaills = optional(map({
-#       apply_update_time_preference = optional(map({
-#         apply_update_preferred_end_time   = optional(string)
-#         apply_update_preferred_start_time = optional(string)
-#       }))
-#       freeze_period = map({
-#         freeze_period_end_time   = optional(string)
-#         freeze_period_start_time = optional(string)
-#       })
-#       is_early_adoption_enabled = optional(bool)
-#       is_freeze_period_enabled  = optional(bool)
-#     }))
+    backup_network_nsg_ids = optional(list(string)) # Literal OCIDs or keys in network_dependency
+    cloud_automation_update_details = optional(object({
+      apply_update_time_preference = optional(object({
+        apply_update_preferred_end_time   = optional(string)
+        apply_update_preferred_start_time = optional(string)
+      }))
+      freeze_period = optional(object({
+        freeze_period_end_time   = optional(string)
+        freeze_period_start_time = optional(string)
+      }))
+      is_early_adoption_enabled = optional(bool)
+      is_freeze_period_enabled  = optional(bool)
+    }))
 
-#     cluster_name = optional(string)
-#     data_collection_options = optional(object({
-#       is_diagnostics_events_enabled = optional(bool)
-#       is_health_monitoring_enabled  = optional(bool)
-#       is_incident_logs_enabled      = optional(bool)
-#     }))
-#     data_storage_percentage     = optional(number) #. Accepted values are 35, 40, 60 and 80. 
-#     data_storage_size_in_tbs    = optional(number)
-#     db_node_storage_size_in_gbs = optional(number)
-#     db_servers                  = optional(list(string))
-#     defined_tags                = optional(map(string))
-#     freeform_tags               = optional(map(string))
-#     domain                      = optional(string)
-#     file_system_configuration_details = optional(map(object({
-#       file_system_size_gb = optional(number)
-#       mount_point         = optional(string)
-#     })))
-#     is_local_backup_enabled     = optional(bool, false)
-#     is_sparse_diskgroup_enabled = optional(bool, false)
-#     license_model               = optional(string)
-#     memory_size_in_gbs          = optional(number)
-#     nsg_ids                     = optional(list(string))
-#     ocpu_count                  = optional(number)
-#     private_zone_id             = optional(string)
-#     scan_listener_port_tcp      = optional(number)
-#     scan_listener_port_tcp_ssl  = optional(number)
-#     security_attributes         = optional(object)
-#     subscription_id             = optional(string)
-#     system_version              = optional(string)
-#     time_zone                   = optional(string)
-#     vm_cluster_type             = optional(string)
-#   }))
-# }
-
+    cluster_name = optional(string)
+    data_collection_options = optional(object({
+      is_diagnostics_events_enabled = optional(bool)
+      is_health_monitoring_enabled  = optional(bool)
+      is_incident_logs_enabled      = optional(bool)
+    }))
+    data_storage_percentage     = optional(number) #. Accepted values are 35, 40, 60 and 80. 
+    data_storage_size_in_tbs    = optional(number)
+    db_node_storage_size_in_gbs = optional(number)
+    db_servers                  = optional(list(string))
+    defined_tags                = optional(map(string))
+    freeform_tags               = optional(map(string))
+    domain                      = optional(string)
+    file_system_configuration_details = optional(map(object({
+      file_system_size_gb = optional(number)
+      mount_point         = optional(string)
+    })))
+    is_local_backup_enabled     = optional(bool, false)
+    is_sparse_diskgroup_enabled = optional(bool, false)
+    license_model               = optional(string)
+    memory_size_in_gbs          = optional(number)
+    nsg_ids                     = optional(list(string))
+    ocpu_count                  = optional(number)
+    private_zone_id             = optional(string)
+    scan_listener_port_tcp      = optional(number)
+    scan_listener_port_tcp_ssl  = optional(number)
+    security = optional(object({ ## security_attributes
+      zpr_attributes = optional(list(object({
+        namespace  = optional(string, "oracle-zpr")
+        attr_name  = string
+        attr_value = string
+        mode       = optional(string, "enforce")
+      })))
+    }))
+    subscription_id = optional(string)
+    system_version  = optional(string)
+    time_zone       = optional(string)
+    vm_cluster_type = optional(string)
+  }))
+}
 
 # variable "db_home_config" {
 #   description = "DB Home Config"
