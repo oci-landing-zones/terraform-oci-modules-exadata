@@ -11,12 +11,12 @@
 # Tenancy Connectivity Variables
 #---------------------------------------
 
-tenancy_ocid         = "ocid1.tenancy.oc1." # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
-user_ocid            = "ocid1.user.oc1.."    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
-fingerprint          = ""                                 # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
-private_key_path     = ""                                                                  # This is the full path on your local system to the API signing private key.
+tenancy_ocid         = "<REPLACE-WITH-TENANCY-OCID>" # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
+user_ocid            = "<REPLACE-WITH-USER-OCID>"    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
+fingerprint          = "<REPLACE-WITH-FINGERGRINT"   # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
+private_key_path     = "<REPLACE-WITH-PRIVATE-KEY-PATH"                                                                  # This is the full path on your local system to the API signing private key.
 private_key_password = ""                                                                                # This is the password that protects the private key, if any.
-region               = "me-riyadh-1"                                                                     # The region name.
+region               = "<REPLACE-WITH-REGION>"                                                                     # The region name.
 
 
 #---------------------------------------
@@ -24,34 +24,77 @@ region               = "me-riyadh-1"                                            
 #---------------------------------------
 compartments_dependency = {
   CMP-1 = {
-    id = "ocid1.compartment.oc1."
+    id = "<REPLACE-WITH-DEFAULT-COMPARTMENT-OCID>"
   }
 }
 
 network_dependency = {
   SUB-1 = {
-    id = "ocid1.onssubscription.oc1."
+    id = "<REPLACE-WITH-SUBSCRIPTION-OCID>"
   }
-  "NSG-EXA-CLIENT-KEY"        = { id = "ocid1.networksecuritygroup.oc1.me-riyadh-1." }
-  "NSG-EXA-BACKUP-KEY"        = { id = "ocid1.networksecuritygroup.oc1.me-riyadh-1." }
-  "EXA-SUBNET-KEY"            = { id = "ocid1.subnet.oc1.me-riyadh-1." }
-  "EXA-EXA-BACKUP-SUBNET-KEY" = { id = "ocid1.subnet.oc1.me-riyadh-1." }
+  "NSG-EXA-CLIENT-KEY"        = { id = "<REPLACE-WITH-NSG-OCID>" }
+  "NSG-EXA-BACKUP-KEY"        = { id = "<REPLACE-WITH-NSG-OCID>" }
+  "EXA-SUBNET-KEY"            = { id = "<REPLACE-WITH-NSG-OCID>" }
+  "EXA-BACKUP-SUBNET-KEY" = { id = "<REPLACE-WITH-NSG-OCID>" }
 }
 
 default_compartment_id = "CMP-1"
 default_freeform_tags  = {}
 default_defined_tags   = {}
 
+exadata_infrastructures = {
+  default_maintenance_window = {
+    preference                    = "NO_PREFERENCE"
+    months                        = ["JANUARY"]
+    weeks_of_month                = ["2"]
+    custom_action_timeout_in_mins = "0"
+    hours_of_day                  = ["0", "4"]
+
+    pathing_mode = "ROLLING"
+  }
+
+  exadata_infrastructure_config = {
+    "My-Exadata-Infra-3" = {
+      display_name = "My-Exadata-Infra-3"
+      shape        = "Exadata.X11M"
+
+      compute_count = 2
+      storage_count = 3
+      customer_contacts = {
+        email = "example@oracle.com"
+      }
+      customer_contacts = {
+        email = "example2@oracle.com"
+      }
+      database_server_type = "X11M"
+
+      maintenance_window = {
+        preference                    = "NO_PREFERENCE"
+        months                        = ["MAY"]
+        weeks_of_month                = ["2"]
+        custom_action_timeout_in_mins = "0"
+        hours_of_day                  = ["0", "4"]
+
+        pathing_mode = "ROLLING"
+      }
+
+      storage_server_type = "X11M-HC"
+      subscription_id     = "SUB-1"
+    }
+  }
+}
+
+
 vm_clusters = {
 
   PROD-EXA1-CL01-KEY = {
-    compartment_id            = "CMP-1" ## "ocid1.compartment.oc1.." ## "MYCMP"
+    compartment_id            = "CMP-1"
     display_name              = "My-VMCluster-2"
-    exadata_infrastructure_id = "ocid1.cloudexadatainfrastructure.oc1.me-riyadh-1."
+    exadata_infrastructure_id = "<REPLACE-WITH-EXA-INFRA-ID>"
 
     # ---- networking----
     subnet_id              = "EXA-SUBNET-KEY"            ## "ocid1.subnet.oc1..client"
-    backup_subnet_id       = "EXA-EXA-BACKUP-SUBNET-KEY" ## "ocid1.subnet.oc1..backup"
+    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY"     ## "ocid1.subnet.oc1..backup"
     nsg_ids                = ["NSG-EXA-CLIENT-KEY"]
     backup_network_nsg_ids = ["NSG-EXA-BACKUP-KEY"]
 
@@ -75,7 +118,7 @@ vm_clusters = {
     system_version  = "25.1.6.0.0.250622"
     hostname        = "abc"
     cluster_name    = "clust02"
-    ssh_public_keys = ["ssh-ed25519 ... "]
+    ssh_public_keys = ["<REPLACE WITH SSH PUBLIC KEY> "]
     license_model   = "LICENSE_INCLUDED"
 
     # ---- optional extras ----
