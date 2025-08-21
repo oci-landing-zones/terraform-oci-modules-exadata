@@ -23,10 +23,23 @@ variable "compartments_dependency" {
   default     = null
 }
 
-variable "network_dependency" {
-  description = "A map of objects containing the externally managed network resources (e.g., subnets, NSGs) this module may depend on. All map objects must have the same type and must contain at least an 'id' attribute of string type set with the resource OCID."
+variable "subscription_dependency" {
+  description = "A map of objects containing the externally managed subscriptions  this module may depend on. All map objects must have the same type and must contain at least an 'id' attribute of string type set with the subscription OCID."
   type        = map(any)
   default     = null
+}
+
+variable "network_dependency" {
+  description = "A map of objects containing the externally managed network resources (e.g., subnets, NSGs) this module may depend on. All map objects must have the same type and must contain at least an 'id' attribute of string type set with the resource OCID."
+  type = object({
+    subnets = optional(map(object({
+      id = string # the subnet OCID
+    })))
+    network_security_groups = optional(map(object({
+      id = string # the subnet OCID
+    })))
+  })
+  default = null
 }
 
 variable "default_compartment_id" {
@@ -47,7 +60,7 @@ variable "default_freeform_tags" {
   default     = {}
 }
 
-variable "exadata_infrastructures" {
+variable "cloud_exadata_infrastructures" {
   description = "Exadata infrastructure configuration."
   default     = null
   type = object({
@@ -65,7 +78,7 @@ variable "exadata_infrastructures" {
       patching_mode      = optional(string) # "ROLLING" or "NONROLLING", default is "ROLLING"
     }))
 
-    exadata_infrastructure_config = map(object({
+    cloud_exadata_infrastructure_configuration = map(object({
       # Attributes for oci_database_cloud_exadata_infrastructure (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_exadata_infrastructure)
       display_name        = string
       shape               = string           # Possible values: Exadata.X11M, Exadata.X9M, Exadata.X8M
@@ -102,37 +115,38 @@ variable "exadata_infrastructures" {
   })
 
   validation {
-    condition = var.exadata_infrastructures == null ? true : alltrue([
-      for k, v in var.exadata_infrastructures.exadata_infrastructure_config :
+    condition = var.cloud_exadata_infrastructures == null ? true : alltrue([
+      for k, v in var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration :
       contains(["Exadata.X11M", "Exadata.X9M", "Exadata.X8M"], v.shape)
     ])
     error_message = "Invalid shape, accepted values are Exadata.X11M, Exadata.X9M, and Exadata.X8M"
   }
 
   validation {
-    condition = var.exadata_infrastructures == null ? true : alltrue([
-      for k, v in var.exadata_infrastructures.exadata_infrastructure_config :
+    condition = var.cloud_exadata_infrastructures == null ? true : alltrue([
+      for k, v in var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration :
       (v.database_server_type == null || contains(["X11M-BASE", "X11M", "X11M-L", "X11M-XL"], v.database_server_type))
     ])
     error_message = "Invalid database server type, accepted values are X11M-BASE, X11M, X11M-L, and X11M-XL."
   }
 
   validation {
-    condition = var.exadata_infrastructures == null ? true : alltrue([
-      for k, v in var.exadata_infrastructures.exadata_infrastructure_config :
+    condition = var.cloud_exadata_infrastructures == null ? true : alltrue([
+      for k, v in var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration :
       (v.storage_server_type == null || contains(["X11M-BASE", "X11M-HC"], v.storage_server_type))
     ])
     error_message = "Invalid storage server type, accepted values are X11M-BASE and X11M-HC."
   }
 }
 
-variable "vm_clusters" {
+variable "cloud_vm_clusters" {
   description = "OCI Database Cloud VM Cluster Configuration."
+  default     = null
   type = map(object({
     # Attributes for oci_database_cloud_vm_cluster (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_vm_cluster)
     backup_subnet_id = string # Literal OCID or key in network_dependency
 
-    exadata_infrastructure_id = string           # OCID or key of the database cloud exadata infrastructure.
+    exadata_infrastructure_id = optional(string) # OCID or key of the database cloud exadata infrastructure.
     compartment_id            = optional(string) # Overrides default; literal OCID or key in compartments_dependency
     cpu_core_count            = number
     display_name              = string

@@ -14,6 +14,10 @@ variable "compartments_dependency" {
   type    = any
   default = null
 }
+variable "subscription_dependency" {
+  type    = any
+  default = null
+}
 variable "network_dependency" {
   type    = any
   default = null
@@ -24,11 +28,11 @@ variable "default_compartment_id" {
 }
 variable "default_defined_tags" { default = null }
 variable "default_freeform_tags" { default = null }
-variable "exadata_infrastructures" {
+variable "cloud_exadata_infrastructures" {
   type    = any
   default = null
 }
-variable "vm_clusters" {
+variable "cloud_vm_clusters" {
   type    = any
   default = null
 }

@@ -3,21 +3,23 @@
 
 locals {
 
-  vm_clusters = { for vm_key, vm in coalesce(var.vm_clusters, {}) : vm_key => merge(vm, {
+  cloud_vm_clusters = { for vm_key, vm in coalesce(var.cloud_vm_clusters, {}) : vm_key => merge(vm, {
     exadata_infra_id = can(regex("^ocid1\\.cloudexadatainfrastructure.", vm.exadata_infrastructure_id)) ? vm.exadata_infrastructure_id : try(oci_database_cloud_exadata_infrastructure.these[vm.exadata_infrastructure_id].id, null)
     compartment_id = vm.compartment_id != null ? (
       can(regex("^ocid1\\.compartment", vm.compartment_id)) ? vm.compartment_id : try(var.compartments_dependency[vm.compartment_id].id, null)) : try(oci_database_cloud_exadata_infrastructure.these[vm.exadata_infrastructure_id].id, (
     can(regex("^ocid1\\.compartment", var.default_compartment_id)) ? var.default_compartment_id : try(var.compartments_dependency[var.default_compartment_id].id, null)))
 
-    subnet_id              = can(regex("^ocid1\\.subnet", vm.subnet_id)) ? vm.subnet_id : try(var.network_dependency[vm.subnet_id].id, null)
-    backup_subnet_id       = can(regex("^ocid1\\.subnet", vm.backup_subnet_id)) ? vm.backup_subnet_id : try(var.network_dependency[vm.backup_subnet_id].id, null)
-    nsg_ids                = [for id in coalesce(vm.nsg_ids, []) : can(regex("^ocid1\\.networksecuritygroup", id)) ? id : try(var.network_dependency[id].id, null)]
-    backup_network_nsg_ids = [for id in coalesce(vm.backup_network_nsg_ids, []) : can(regex("^ocid1\\.networksecuritygroup", id)) ? id : try(var.network_dependency[id].id, null)]
+    subnet_id              = can(regex("^ocid1\\.subnet", vm.subnet_id)) ? vm.subnet_id : try(var.network_dependency.subnets[vm.subnet_id].id, null)
+    backup_subnet_id       = can(regex("^ocid1\\.subnet", vm.backup_subnet_id)) ? vm.backup_subnet_id : try(var.network_dependency.subnets[vm.backup_subnet_id].id, null)
+    nsg_ids                = [for id in coalesce(vm.nsg_ids, []) : can(regex("^ocid1\\.networksecuritygroup", id)) ? id : try(var.network_dependency.network_security_groups[id].id, null)]
+    backup_network_nsg_ids = [for id in coalesce(vm.backup_network_nsg_ids, []) : can(regex("^ocid1\\.networksecuritygroup", id)) ? id : try(var.network_dependency.network_security_groups[id].id, null)]
   }) }
 }
 
 resource "oci_database_cloud_vm_cluster" "these" {
-  for_each = local.vm_clusters
+  depends_on = [oci_database_cloud_exadata_infrastructure.these]
+
+  for_each = local.cloud_vm_clusters
 
   cloud_exadata_infrastructure_id = each.value.exadata_infra_id
   compartment_id                  = each.value.compartment_id
