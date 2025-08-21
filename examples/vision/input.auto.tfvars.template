@@ -14,7 +14,7 @@
 tenancy_ocid         = "<REPLACE-WITH-TENANCY-OCID>" # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
 user_ocid            = "<REPLACE-WITH-USER-OCID>"    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
 fingerprint          = "<REPLACE-WITH-FINGERGRINT"   # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
-private_key_path     = "<REPLACE-WITH-PRIVATE-KEY-PATH"                                                                  # This is the full path on your local system to the API signing private key.
+private_key_path     = "<REPLACE-WITH-PRIVATE-KEY-PATH>"                                                                  # This is the full path on your local system to the API signing private key.
 private_key_password = ""                                                                                # This is the password that protects the private key, if any.
 region               = "<REPLACE-WITH-REGION>"                                                                     # The region name.
 
@@ -28,19 +28,26 @@ compartments_dependency = {
   }
 }
 
-network_dependency = {
+subscription_dependency = {
   SUB-1 = {
-    id = "<REPLACE-WITH-SUBSCRIPTION-OCID>"
-  }
-  "NSG-EXA-CLIENT-KEY"        = { id = "<REPLACE-WITH-NSG-OCID>" }
-  "NSG-EXA-BACKUP-KEY"        = { id = "<REPLACE-WITH-NSG-OCID>" }
-  "EXA-SUBNET-KEY"            = { id = "<REPLACE-WITH-NSG-OCID>" }
-  "EXA-BACKUP-SUBNET-KEY" = { id = "<REPLACE-WITH-NSG-OCID>" }
+    id = "<REPLACE-WITH-SUBSCRIPTION-ID"
+   }
 }
 
+network_dependency = {
+  network_security_groups = {
+    "NSG-EXA-CLIENT-KEY" = { id = "<REPLACE-WITH-NSG-OCID>" }
+    "NSG-EXA-BACKUP-KEY" = { id = "<REPLACE-WITH-NSG-OCID>" }
+  }
+  subnets = {
+    "EXA-SUBNET-KEY"        = { id = "<REPLACE-WITH-SUBNET-OCID>" }
+    "EXA-BACKUP-SUBNET-KEY" = { id = "<REPLACE-WITH-SUBNET-OCID>" }
+  }
+}
 default_compartment_id = "CMP-1"
 default_freeform_tags  = {}
 default_defined_tags   = {}
+
 
 exadata_infrastructures = {
   default_maintenance_window = {
@@ -84,17 +91,16 @@ exadata_infrastructures = {
   }
 }
 
-
 vm_clusters = {
 
   PROD-EXA1-CL01-KEY = {
     compartment_id            = "CMP-1"
     display_name              = "My-VMCluster-2"
-    exadata_infrastructure_id = "<REPLACE-WITH-EXA-INFRA-ID>"
+    exadata_infrastructure_id = "My-Exadata-Infra-3"
 
     # ---- networking----
-    subnet_id              = "EXA-SUBNET-KEY"            ## "ocid1.subnet.oc1..client"
-    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY"     ## "ocid1.subnet.oc1..backup"
+    subnet_id              = "EXA-SUBNET-KEY"            ## "ocid1.subnet.oc1.."
+    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY"     ## "ocid1.subnet.oc1.."
     nsg_ids                = ["NSG-EXA-CLIENT-KEY"]
     backup_network_nsg_ids = ["NSG-EXA-BACKUP-KEY"]
 
@@ -118,7 +124,7 @@ vm_clusters = {
     system_version  = "25.1.6.0.0.250622"
     hostname        = "abc"
     cluster_name    = "clust02"
-    ssh_public_keys = ["<REPLACE WITH SSH PUBLIC KEY> "]
+    ssh_public_keys = ["<REPLACE WITH SSH PUBLIC KEY>"]
     license_model   = "LICENSE_INCLUDED"
 
     # ---- optional extras ----

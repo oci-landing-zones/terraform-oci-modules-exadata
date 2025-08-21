@@ -6,7 +6,7 @@
 # NOTE!!! Note that the order of the results returned can change if availability domains are added or removed; 
 # therefore, do not create a dependency on the list order.
 data "oci_identity_availability_domains" "ads" {
-  for_each = var.exadata_infrastructures != null ? var.exadata_infrastructures.exadata_infrastructure_config != null ? var.exadata_infrastructures.exadata_infrastructure_config : {} : {}
+  for_each = var.cloud_exadata_infrastructures != null ? var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration != null ? var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration : {} : {}
   compartment_id = each.value.compartment_id != null ? (
     length(regexall("^ocid1.*$", each.value.compartment_id)) > 0 ? each.value.compartment_id : var.compartments_dependency[each.value.compartment_id].id
     ) : (
@@ -15,7 +15,7 @@ data "oci_identity_availability_domains" "ads" {
 
 
 resource "oci_database_cloud_exadata_infrastructure" "these" {
-  for_each = var.exadata_infrastructures != null ? var.exadata_infrastructures.exadata_infrastructure_config : {}
+  for_each = var.cloud_exadata_infrastructures != null ? var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration : {}
 
   display_name = each.value.display_name
   shape        = each.value.shape
@@ -39,7 +39,7 @@ resource "oci_database_cloud_exadata_infrastructure" "these" {
   freeform_tags        = merge(each.value.freeform_tags != null ? each.value.freeform_tags : var.default_freeform_tags)
 
   dynamic "maintenance_window" {
-    for_each = each.value.maintenance_window != null ? [each.value.maintenance_window] : var.exadata_infrastructures.default_maintenance_window != null ? [var.exadata_infrastructures.default_maintenance_window] : []
+    for_each = each.value.maintenance_window != null ? [each.value.maintenance_window] : var.cloud_exadata_infrastructures.default_maintenance_window != null ? [var.cloud_exadata_infrastructures.default_maintenance_window] : []
     content {
       custom_action_timeout_in_mins = try(maintenance_window.value.custom_action_timeout_in_mins, null)
       dynamic "days_of_week" {
@@ -67,5 +67,5 @@ resource "oci_database_cloud_exadata_infrastructure" "these" {
 
   storage_count       = each.value.storage_count
   storage_server_type = each.value.storage_server_type
-  subscription_id     = can(regex("^ocid1\\.", each.value.subscription_id)) ? each.value.subscription_id : try(var.network_dependency[each.value.subscription_id].id, null)
+  subscription_id     = can(regex("^ocid1\\.", each.value.subscription_id)) ? each.value.subscription_id : try(var.subscription_dependency[each.value.subscription_id].id, null)
 }
