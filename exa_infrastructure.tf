@@ -49,9 +49,9 @@ resource "oci_database_cloud_exadata_infrastructure" "these" {
         }
       }
       hours_of_day                     = maintenance_window.value.hours_of_day != null ? (length(maintenance_window.value.hours_of_day) > 0 ? maintenance_window.value.hours_of_day : null) : null
-      is_custom_action_timeout_enabled = try(maintenance_window.value.is_custom_action_tiemout_enabled, null)
+      is_custom_action_timeout_enabled = try(maintenance_window.value.is_custom_action_timeout_enabled, null)
       is_monthly_patching_enabled      = try(maintenance_window.value.is_monthly_patching_enabled, null)
-      lead_time_in_weeks               = maintenance_window.value.lead_time_in_weeks != null ? (length(maintenance_window.value.lead_time_in_weeks) > 0 ? maintenance_window.value.lead_time_in_weeks : null) : null
+      lead_time_in_weeks               = maintenance_window.value.lead_time_in_weeks != null ? maintenance_window.value.lead_time_in_weeks : null
 
       dynamic "months" {
         for_each = maintenance_window.value.months != null ? maintenance_window.value.months : []
