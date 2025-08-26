@@ -95,4 +95,12 @@ resource "oci_database_cloud_vm_cluster" "these" {
       mount_point         = file_system_configuration_details.value.mount_point
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      gi_version,
+      system_version,
+      defined_tags,
+    ]
+  }
 }

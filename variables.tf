@@ -75,7 +75,6 @@ variable "cloud_exadata_infrastructures" {
       # 16 - represents time slot 16:00 - 19:59 UTC - 20 - represents time slot 20:00 - 23:59 UTC
       hours_of_day       = optional(list(number))
       lead_time_in_weeks = optional(number)
-      patching_mode      = optional(string) # "ROLLING" or "NONROLLING", default is "ROLLING"
     }))
 
     cloud_exadata_infrastructure_configuration = map(object({
@@ -99,7 +98,7 @@ variable "cloud_exadata_infrastructures" {
         custom_action_timeout_in_mins    = optional(number)
         days_of_week                     = optional(list(string))
         hours_of_day                     = optional(list(number))
-        is_custom_action_tiemout_enabled = optional(bool)
+        is_custom_action_timeout_enabled = optional(bool)
         is_monthly_patching_enabled      = optional(bool)
         lead_time_in_weeks               = optional(number)
 
