@@ -277,93 +277,97 @@ variable "cloud_vm_clusters" {
 #   }))
 # }
 
-# variable "databases_config" {
-#   description = "Configuration for the database resources"
-#   type = map(object({
-#     database = object({
-#       admin_password             = string #sensitive
-#       db_name                    = string
-#       backup_id                  = optional(string) # For restore
-#       backup_tde_password        = optional(string)
-#       character_set              = optional(string)
-#       database_software_image_id = optional(string)
-#       db_backup_config = object({
-#         auto_backup_enabled     = optional(bool)
-#         auto_backup_window      = optional(string)
-#         auto_full_backup_day    = optional(string)
-#         auto_full_backup_window = optional(string)
-#         backup_deletion_policy  = optional(string)
-#         backup_destination_details = object({
-#           dbrs_policy_id = optional(string)
-#           id             = optional(string)
-#           is_remote      = optional(bool)
-#           remote_region  = optional(string)
-#           type           = optional(string)
-#         })
-#         recovery_window_in_days   = optional(number)
-#         run_immediate_full_backup = optional(bool)
-#       })
-#       db_unique_name = optional(string)
-#       db_workload    = optional(string) # e.g., "OLTP"
-#       defined_tags   = optional(map(string))
-#       encryption_key_location_details = object({
-#         provider_type           = string
-#         azure_encryption_key_id = optional(string)
-#         hsm_password            = optional(string)
-#       })
-#       freeform_tags                = optional(map(string))
-#       key_store_id                 = optional(string)
-#       is_active_data_guard_enabled = optional(bool)
-#       kms_key_id                   = optional(string)
-#       kms_key_version_id           = optional(string)
-#       ncharacter_set               = optional(string)
-#       pdb_name                     = optional(string)
-#       pluggable_databases          = optional(list(string))
-#       protection_mode              = optional(string)
-#       sid_prefix                   = optional(string)
-#       source_database_id           = optional(string)
-#       source_tde_wallet_password   = optional(string)
-#       source_encryption_key_location_details = object({
-#         provider_type           = string
-#         azure_encryption_key_id = optional(string)
-#         hsm_password            = optional(string)
-#       })
-#       tde_wallet_password = optional(string)
-#       transport_type      = optional(string)
-#       vault_id            = optional(string)
-#     })
-#     db_home_id         = string
-#     source             = string
-#     db_version         = optional(string)
-#     kms_key_id         = optional(string)
-#     kms_key_version_id = optional(string)
-#   }))
-# }
+variable "databases_config" {
+  description = "Configuration for the database resources"
+  type = map(object({
+    database = object({
+      admin_password             = string #sensitive
+      db_name                    = string
+      backup_id                  = optional(string) # For restore
+      backup_tde_password        = optional(string)
+      character_set              = optional(string)
+      database_admin_password   = optional(string) # For when source=DATAGUARD
+      database_software_image_id = optional(string)
+      db_backup_config = optional(object({
+        auto_backup_enabled     = optional(bool)
+        auto_backup_window      = optional(string)
+        auto_full_backup_day    = optional(string)
+        auto_full_backup_window = optional(string)
+        backup_deletion_policy  = optional(string)
+        backup_destination_details = optional(object({
+          dbrs_policy_id = optional(string)
+          id             = optional(string)
+          is_remote      = optional(bool)
+          remote_region  = optional(string)
+          type           = optional(string)
+          vpc_password   = optional(string)
+          vpc_user       = optional(string)
+        }))
+        recovery_window_in_days   = optional(number)
+        run_immediate_full_backup = optional(bool)
+      }))
+      db_unique_name = optional(string)
+      db_workload    = optional(string) # e.g., "OLTP"
+      defined_tags   = optional(map(string))
+      encryption_key_location_details = optional(object({
+        provider_type           = string
+        azure_encryption_key_id = optional(string)
+        hsm_password            = optional(string)
+      }))
+      freeform_tags                = optional(map(string))
+      key_store_id                 = optional(string)
+      is_active_data_guard_enabled = optional(bool)
+      kms_key_id                   = optional(string)
+      kms_key_version_id           = optional(string)
+      ncharacter_set               = optional(string)
+      pdb_name                     = optional(string)
+      pluggable_databases          = optional(list(string))
+      protection_mode              = optional(string)
+      sid_prefix                   = optional(string)
+      source_database_id           = optional(string)
+      source_tde_wallet_password   = optional(string)
+      source_encryption_key_location_details = optional(object({
+        provider_type           = string
+        azure_encryption_key_id = optional(string)
+        hsm_password            = optional(string)
+      }))
+      tde_wallet_password = optional(string)
+      transport_type      = optional(string)
+      vault_id            = optional(string)
+    })
+    db_home_id         = string
+    source             = string
+    key_store_id       = optional(string)
+    db_version         = optional(string)
+    kms_key_id         = optional(string)
+    kms_key_version_id = optional(string)
+  }))
+}
 
-# variable "pluggable_databases_config" {
-#   description = "Pluggable Database Config"
-#   type = map(object({
-#     container_database_id = string # Literal OCID or network dependency key
-#     pbd_name              = string
+ variable "pluggable_databases_config" {
+   description = "Pluggable Database Config"
+   type = map(object({
+     container_database_id = string # Literal OCID or network dependency key
+     pdb_name              = string
 
-#     container_database_admin_password = optional(string) # Sensitive
-#     defined_tags                      = optional(map(string))
-#     freeform_tags                     = optional(map(string))
-#     kms_key_version_id                = optional(string)
-#     pdb_admin_password                = optional(string) # Sensitive
-#     pdb_creation_type_details = optional(map({
-#       creation_type                = string
-#       source_pluggable_database_id = string
-#       dblink_user_password         = optional(string)
-#       dblink_username              = optional(string)
-#       is_thin_clone                = optional(bool)
-#       refreshable_clone_details = optional(map({
-#         is_refreshable_clone = optional(bool)
-#       }))
-#       source_container_database_admin_password = optional(string) # Sensitive
-#     }))
-#     should_create_pdb_backup           = optional(bool)
-#     should_pdb_admin_account_be_locked = optional(bool)
-#     tde_wallet_password                = optional(string)
-#   }))
-# }
+     container_database_admin_password = optional(string) # Sensitive
+     defined_tags                      = optional(map(string))
+     freeform_tags                     = optional(map(string))
+     kms_key_version_id                = optional(string)
+     pdb_admin_password                = optional(string) # Sensitive
+     pdb_creation_type_details = optional(object({
+       creation_type                = string
+       source_pluggable_database_id = string
+       dblink_user_password         = optional(string)
+       dblink_username              = optional(string)
+       is_thin_clone                = optional(bool)
+       refreshable_clone_details = optional(object({
+        is_refreshable_clone = optional(bool)
+       }))
+       source_container_database_admin_password = optional(string) # Sensitive
+     }))
+     should_create_pdb_backup           = optional(bool)
+     should_pdb_admin_account_be_locked = optional(bool)
+     tde_wallet_password                = optional(string)
+   }))
+ }
