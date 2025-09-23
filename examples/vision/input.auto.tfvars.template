@@ -166,6 +166,106 @@ cloud_vm_clusters = {
   }
 }
 
+cloud_db_homes = {
+  "dbhome1" = {
+    # ----------------------------
+    # DB Home Level
+    # ----------------------------
+    # vm_cluster_id  = "My-VMCluster-2"   # can be key from vm_clusters map or direct OCID
+    vm_cluster_id  = "ocid1.cloudvmcluster.oc1.eu-frankfurt-1.aaaa" # required if source = VM_CLUSTER_NEW
+    display_name   = "Sheena-ExaLZ-TF-DBHome-2"
+    db_version     = "19.0.0.0"
+    description    = "DB Home Config" # optional
+    source         = "VM_CLUSTER_NEW" # optional (default = VM_CLUSTER_NEW)
+
+    database_software_image_id  = null              # optional custom DB software image
+    db_system_id                = null              # optional, only if source = NONE or DB_BACKUP
+    enable_database_delete      = false             # optional, default = false
+    is_desupported_version      = null              # optional
+    is_unified_auditing_enabled = null              # optional
+    kms_key_id                  = null              # optional
+    kms_key_version_id          = null              # optional
+    defined_tags                = {}                # optional
+    freeform_tags               = { "env" = "dev" } # optional
+
+    # ----------------------------
+    # Database inside DB Home
+    # ----------------------------
+    database = {
+      "db1" = {
+        admin_password = "<<Strong password>>" # required
+        db_name        = "TESTDB"       # required
+        db_workload    = "OLTP"         # required
+
+        pdb_name            = "TESTPDB1"       # optional
+        #sid_prefix          = "test"            # Can't configure a value for "database.0.sid_prefix": its value will be decided automatically based on the result of applying this configuration.
+        character_set       = "AL32UTF8"       # optional
+        ncharacter_set      = "AL16UTF16"      # optional
+        pluggable_databases = ["PDB1", "PDB2"] # optional
+
+        backup_id                  = null # optional (restore from backup)
+        backup_tde_password        = null # optional
+        database_id                = null # optional (clone from DB)
+        database_software_image_id = null # optional
+
+        # Backup Config (optional)
+        db_backup_config = {
+          "default" = {
+            auto_backup_enabled       = "true"
+            auto_backup_window        = "SLOT_ONE"
+            auto_full_backup_day      = "SUNDAY"
+            auto_full_backup_window   = "SLOT_TWO"
+            backup_deletion_policy    = "DELETE_AFTER_RETENTION_PERIOD"
+            #recovery_window_in_days   = 30 #<<recoveryWindow cannot have value for Backup destination as Database Recovery System.>
+            run_immediate_full_backup = "false"
+
+            backup_destination_details = {
+              "bkp1" = {
+                dbrs_policy_id = "ocid1.recoveryservicepolicy.region1..aaaa"
+                id             = "ocid1.recoveryserviceprotecteddatabase.oc1.eu-frankfurt-1.aaaa"
+                #is_remote      = false
+                #remote_region  = null
+                type           = "DBRS" # e.g. DBRS or ObjectStore
+              }
+            }
+          }
+        }
+
+        # Security / Encryption (all optional)
+        tde_wallet_password = null
+        key_store_id        = null
+        kms_key_id          = null
+        kms_key_version_id  = null
+        vault_id            = null
+
+        # Cross-cloud encryption (optional, advanced)
+        encryption_key_location_details = {
+          "azure" = {
+            provider_type           = "AZURE" # required if block present
+            #azure_encryption_key_id = #<<The ID of the Azure Key Vault key.>>
+            #hsm_password            = #<<The password of the HSM user.>>
+          }
+        }
+
+        # source_encryption_key_location_details = {
+        #   "src1" = {
+        #     provider_type           = "AZURE" # required if block present
+        #     azure_encryption_key_id = #<<The ID of the Azure Key Vault key.>>
+        #     hsm_password            = "<<password>>" #<<The password of the HSM user.>>
+        #   }
+        # }
+
+        # PITR
+        time_stamp_for_point_in_time_recovery = null # optional RFC3339 timestamp
+
+        # Tags
+        defined_tags  = {}
+        freeform_tags = { "app" = "myapp" }
+      }
+    }
+  }
+}
+
 # ---------------------------------------
 # Database(s) with initial PDB
 # ---------------------------------------

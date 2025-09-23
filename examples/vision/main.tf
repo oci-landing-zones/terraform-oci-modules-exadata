@@ -5,6 +5,7 @@ module "vision_exadata" {
   source                        = "../.."
   #cloud_exadata_infrastructures = var.cloud_exadata_infrastructures
   #cloud_vm_clusters             = var.cloud_vm_clusters
+  cloud_db_homes                = var.cloud_db_homes
   compartments_dependency       = var.compartments_dependency
   network_dependency            = var.network_dependency
   subscription_dependency       = var.subscription_dependency
