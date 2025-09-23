@@ -209,73 +209,76 @@ variable "cloud_vm_clusters" {
   }))
 }
 
-# variable "db_home_config" {
-#   description = "DB Home Config"
-#   type = map(object({
-#     # Attributes for oci_database_db_home (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_db_home)
-#     database = optional(map({
-#       admin_password             = string
-#       backup_id                  = optional(string)
-#       backup_tde_password        = optional(string)
-#       character_set              = optional(string)
-#       database_id                = optional(string)
-#       database_software_image_id = optional(string)
-#       db_backup_config = optional(map({
-#         auto_backup_enabled     = optional(bool)
-#         auto_backup_window      = optional(string)
-#         auto_full_backup_day    = optional(string)
-#         auto_full_backup_window = optional(string)
-#         backup_deletion_policy  = optional(string)
-#         backup_destination_details = optional(map({
-#           dbrs_policy_id = optional(string)
-#           id             = optional(string)
-#           is_remote      = optional(bool)
-#           remote_region  = optional(string)
-#           type           = optional(string)
-#         }))
-#         recovery_window_in_days   = optional(number)
-#         run_immediate_full_backup = optional(bool)
-#       }))
-#       db_name      = optional(string)
-#       db_workload  = optional(string)
-#       defined_tags = optional(map(string))
-#       encryption_key_location_details = optional(map({
-#         provider_type           = string
-#         azure_encryption_key_id = optional(string)
-#         hsm_password            = optional(string)
-#       }))
-#       freeform_tags       = optional(map(string))
-#       key_store_id        = optional(string)
-#       kms_key_id          = optional(string)
-#       kms_key_version_id  = optional(string)
-#       ncharacter_set      = optional(string)
-#       pdb_name            = optional(string)
-#       pluggable_databases = optional(list(string))
-#       sid_prefix          = optional(string)
-#       source_encryption_key_location_details = optional(map({
-#         provider_type           = string
-#         azure_encryption_key_id = optional(string)
-#         hsm_password            = optional(string)
-#       }))
-#       tde_wallet_password                   = optional(string)
-#       time_stamp_for_point_in_time_recovery = optional(string)
-#       vault_id                              = optional(string)
-#     }))
-#     database_software_image_id  = optional(string)
-#     db_system_id                = optional(string)
-#     db_version                  = optional(string) # e.g., "19.0.0.0"
-#     defined_tags                = optional(map(string))
-#     display_name                = optional(string)
-#     enable_database_delete      = optional(bool, false)
-#     freeform_tags               = optional(map(string))
-#     is_desupported_version      = optional(bool)
-#     is_unified_auditing_enabled = optional(bool)
-#     kms_key_id                  = optional(string)
-#     kms_key_version_id          = optional(string)
-#     source                      = optional(string, "NONE") # Valid values: "NONE", "DB_BACKUP", "VM_CLUSTER_NEW"
-#     vm_cluster_id               = optional(string)
-#   }))
-# }
+variable "cloud_db_homes" {
+  description = "DB Home Config"
+  default     = null
+  type = map(object({
+    # Attributes for oci_database_db_home (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_db_home)
+    compartment_id            = optional(string) # Exported attribute
+    database_software_image_id  = optional(string)
+    db_system_id                = optional(string)
+    db_version                  = optional(string) # e.g., "19.0.0.0"
+    defined_tags                = optional(map(string))
+    display_name                = optional(string)
+    enable_database_delete      = optional(bool, false)
+    freeform_tags               = optional(map(string))
+    is_desupported_version      = optional(bool)
+    is_unified_auditing_enabled = optional(bool)
+    kms_key_id                  = optional(string)
+    kms_key_version_id          = optional(string)
+    source                      = optional(string, "NONE") # Valid values: "NONE", "DB_BACKUP", "VM_CLUSTER_NEW"
+    vm_cluster_id               = optional(string)
+    database = optional(map(object({
+      admin_password             = string
+      backup_id                  = optional(string)
+      backup_tde_password        = optional(string)
+      character_set              = optional(string)
+      database_id                = optional(string)
+      database_software_image_id = optional(string)
+      db_backup_config = optional(map(object({
+        auto_backup_enabled     = optional(bool)
+        auto_backup_window      = optional(string)
+        auto_full_backup_day    = optional(string)
+        auto_full_backup_window = optional(string)
+        backup_deletion_policy  = optional(string)
+        backup_destination_details = optional(map(object({
+          dbrs_policy_id = optional(string)
+          id             = optional(string)
+          is_remote      = optional(bool)
+          remote_region  = optional(string)
+          type           = optional(string)
+        })))
+        recovery_window_in_days   = optional(number)
+        run_immediate_full_backup = optional(bool)
+      })))
+      db_name      = optional(string)
+      db_workload  = optional(string)
+      defined_tags = optional(map(string))
+      encryption_key_location_details = optional(map(object({
+        provider_type           = string
+        azure_encryption_key_id = optional(string)
+        hsm_password            = optional(string)
+      })))
+      #optional
+      freeform_tags       = optional(map(string))
+      key_store_id        = optional(string)
+      kms_key_id          = optional(string)
+      kms_key_version_id  = optional(string)
+      ncharacter_set      = optional(string)
+      pdb_name            = optional(string)
+      pluggable_databases = optional(list(string))
+      sid_prefix          = optional(string)
+      source_encryption_key_location_details = optional(map(object({
+        provider_type           = string
+        azure_encryption_key_id = optional(string)
+        hsm_password            = optional(string)
+      })))
+      tde_wallet_password                   = optional(string)
+      time_stamp_for_point_in_time_recovery = optional(string)
+      vault_id                              = optional(string)
+    })))
+   })) 
+  }
 
 variable "databases_config" {
   description = "Configuration for the database resources"
