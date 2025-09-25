@@ -1,11 +1,22 @@
 # OCI Landing Zones Exadata Module Example - Vision
 
 ## Introduction
-This example shows how to deploy Exadata resources in Orcale Cloud Infrastructure (OCI) for a hypothetical Vision entity using external dependencies. 
+This example shows how to deploy Exadata resources in Orcale Cloud Infrastructure (OCI).
 
-It deploys the following resources:
+It includes 2 stacks:
+Stack 1 deploys:
 - one Exadata Infrastructure
-- one VM cluster
+  - one VM cluster in VCN-1
+    - one Database Home
+      - one Container Database
+        - one Pluggable Database
+Stack 2 deploys:
+- one VM cluster in VNC-2, in Exadata Infra created from stack 1
+  - one Database Home
+    - one Container Database
+      - one Pluggable Database
+
+
 
 See [input.auto.tfvars.template](./input.auto.tfvars) for resource configuration. 
 See [Module's README.md](../../README.md) for overall attributes usage.

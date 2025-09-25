@@ -214,7 +214,7 @@ variable "cloud_db_homes" {
   default     = null
   type = map(object({
     # Attributes for oci_database_db_home (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_db_home)
-    compartment_id            = optional(string) # Exported attribute
+    compartment_id              = optional(string) # Exported attribute
     database_software_image_id  = optional(string)
     db_system_id                = optional(string)
     db_version                  = optional(string) # e.g., "19.0.0.0"
@@ -277,11 +277,12 @@ variable "cloud_db_homes" {
       time_stamp_for_point_in_time_recovery = optional(string)
       vault_id                              = optional(string)
     })))
-   })) 
-  }
+  }))
+}
 
 variable "databases_config" {
   description = "Configuration for the database resources"
+  default     = null
   type = map(object({
     database = object({
       admin_password             = string #sensitive
@@ -289,7 +290,7 @@ variable "databases_config" {
       backup_id                  = optional(string) # For restore
       backup_tde_password        = optional(string)
       character_set              = optional(string)
-      database_admin_password   = optional(string) # For when source=DATAGUARD
+      database_admin_password    = optional(string) # For when source=DATAGUARD
       database_software_image_id = optional(string)
       db_backup_config = optional(object({
         auto_backup_enabled     = optional(bool)
@@ -347,30 +348,31 @@ variable "databases_config" {
   }))
 }
 
- variable "pluggable_databases_config" {
-   description = "Pluggable Database Config"
-   type = map(object({
-     container_database_id = string # Literal OCID or network dependency key
-     pdb_name              = string
+variable "pluggable_databases_config" {
+  description = "Pluggable Database Config"
+  default     = null
+  type = map(object({
+    container_database_id = string # Literal OCID or network dependency key
+    pdb_name              = string
 
-     container_database_admin_password = optional(string) # Sensitive
-     defined_tags                      = optional(map(string))
-     freeform_tags                     = optional(map(string))
-     kms_key_version_id                = optional(string)
-     pdb_admin_password                = optional(string) # Sensitive
-     pdb_creation_type_details = optional(object({
-       creation_type                = string
-       source_pluggable_database_id = string
-       dblink_user_password         = optional(string)
-       dblink_username              = optional(string)
-       is_thin_clone                = optional(bool)
-       refreshable_clone_details = optional(object({
+    container_database_admin_password = optional(string) # Sensitive
+    defined_tags                      = optional(map(string))
+    freeform_tags                     = optional(map(string))
+    kms_key_version_id                = optional(string)
+    pdb_admin_password                = optional(string) # Sensitive
+    pdb_creation_type_details = optional(object({
+      creation_type                = string
+      source_pluggable_database_id = string
+      dblink_user_password         = optional(string)
+      dblink_username              = optional(string)
+      is_thin_clone                = optional(bool)
+      refreshable_clone_details = optional(object({
         is_refreshable_clone = optional(bool)
-       }))
-       source_container_database_admin_password = optional(string) # Sensitive
-     }))
-     should_create_pdb_backup           = optional(bool)
-     should_pdb_admin_account_be_locked = optional(bool)
-     tde_wallet_password                = optional(string)
-   }))
- }
+      }))
+      source_container_database_admin_password = optional(string) # Sensitive
+    }))
+    should_create_pdb_backup           = optional(bool)
+    should_pdb_admin_account_be_locked = optional(bool)
+    tde_wallet_password                = optional(string)
+  }))
+}

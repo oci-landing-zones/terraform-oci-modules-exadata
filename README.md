@@ -25,10 +25,10 @@ The module accepts the following input variables:
 - default_defined_tags: Default defined tags for all resources.
 - default_freeform_tags: Default freeform tags for all resources.
 
-### Exadata Infrastructure
-- exadata_infrastructures: Exadata infrastructure configuration. This is an object with the following attributes:
+### Cloud Exadata Infrastructure
+- cloud_exadata_infrastructures: Exadata infrastructure configuration. This is an object with the following attributes:
   - default_maintenance_window: Default maintenance window configuration.
-  - exadata_infrastructure_config: A map of Exadata infrastructure configurations.
+  - cloud_exadata_infrastructure_configuration: A map of Exadata infrastructure configurations.
 
 Each Exadata infrastructure configuration object has the following attributes:
 
@@ -47,11 +47,13 @@ compute_count: Compute count of the Exadata infrastructure.
 subscription_id: Subscription ID of the Exadata infrastructure.
 - subscription_id: Subscription ID of the Exadata infrastructure.
 
+For more details on this resource, please see OCI Terraform Documentation for [oci_database_cloud_exadata_infrastructure](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_exadata_infrastructure)
 
-### VM Clusters
-- vm_clusters: OCI Database Cloud VM Cluster Configuration. This is a map of VM cluster configurations.
 
-Each VM cluster configuration object has the following attributes:
+### Cloud VM Clusters
+- cloud_vm_clusters: OCI Database Cloud VM Cluster Configuration. This is a map of VM cluster configurations.
+
+Each Cloud VM cluster configuration object has the following attributes:
 - backup_subnet_id: Backup subnet ID of the VM cluster.
 - exadata_infrastructure_id: Exadata infrastructure ID of the VM cluster.
 - compartment_id: Compartment ID of the VM cluster. Overrides default compartment ID.
@@ -87,6 +89,76 @@ backup_network_nsg_ids: Backup network NSG IDs of the VM cluster.
 - system_version: System version of the VM cluster.
 - time_zone: Time zone of the VM cluster.
 - vm_cluster_type: VM cluster type.
+
+These attributes are not updatable after initial resource creation:
+- gi_version
+- system_version
+- defined_tags
+
+For more details on this resource, please see OCI Terraform Documentation for [oci_database_cloud_vm_cluster](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_vm_cluster)
+
+
+### Cloud DB Homes
+- cloud_db_homes: OCI Database Cloud Database Home Configuration. This is a map of DB Home configurations.
+
+Each DB Home object has the following attributes:
+- database: Details for creating a database.
+- database_software_image_id: The database software image OCID
+- db_system_id: The OCID of the DB system.
+- db_version: A valid Oracle Database version. For a list of supported versions, use the ListDbVersions operation.
+- defined_tags: Defined tags for this resource. Each key is predefined and scoped to a namespace. For more information, see Resource Tags.
+- display_name: The user-provided name of the Database Home.
+- is_desupported_version: If true, the customer acknowledges that the specified Oracle Database software is an older release that is not currently supported by OCI.
+- is_unified_auditing_enabled: Indicates whether unified autiding is enabled or not. Set to True to enable unified auditing on respective DBHome.
+- kms_key_id: The OCID of the key container that is used as the master encryption key in database transparent data encryption (TDE) operations.
+- kms_key_version_id: The OCID of the key container version that is used in database transparent data encryption (TDE) operations KMS Key can have multiple key versions. If none is specified, the current key version (latest) of the Key Id is used for the operation.
+- freeform_tags: Free-form tags for this resource. Each tag is a simple key-value pair with no predefined name, type, or namespace. For more information, see Resource Tags. Example: {"Department": "Finance"}
+- source: The source of database: NONE for creating a new database. DB_BACKUP for creating a new database by restoring from a database backup. VM_CLUSTER_NEW for creating a database for VM Cluster.
+- vm_cluster_id: The OCID or key of the VM cluster.
+
+These attributes are not updatable after initial resource creation
+- db_version
+- database_software_image_id
+
+For more details on this resource, please see OCI Terraform Documentation for [oci_database_db_home](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_db_home)
+
+
+### Databases
+- databases_config: OCI Database Configuration. This is a map of database configurations. 
+
+Each Database Configuration object has the following attributes:
+- database: Details for creating a database.
+- db_home_id: The OCID or key of the Database Home.
+- source: The source of the database: Use NONE for creating a new database. Use DB_BACKUP for creating a new database by restoring from a backup. Use DATAGUARD for creating a new STANDBY database for a Data Guard setup. The default is NONE.
+- key_store_id: The OCID of the key store of Oracle Vault.
+- db_version: A valid Oracle Database version. For a list of supported versions, use the ListDbVersions operation.
+- kms_key_id: The OCID of the key container that is used as the master encryption key in database transparent data encryption (TDE) operations.
+- kms_key_version_id: The OCID of the key container version that is used in database transparent data encryption (TDE) operations KMS Key can have multiple key versions. If none is specified, the current key version (latest) of the Key Id is used for the operation.
+
+These attributes are not updatable after initial resource creation:
+- db_home_id
+- db_version
+- database.admin_password
+
+For more details on this resource, please see OCI Terraform Documentation for [oci_database_database](https://docs.oracle.com/en-us/iaas/tools/terraform-provider-oci/7.20.0/docs/r/database_database.html)
+
+### Pluggable Databases
+- pluggable_databases_config: OCI Database Pluggable Database Configuration. This is a map of PDB configurations.
+
+Each PDB Configuration object has the following attributes:
+- container_database_id: The OCID or key of the CDB.
+- pdb_name: The name for the pluggable database (PDB). The name is unique in the context of a container database. The name must begin with an alphabetic character and can contain a maximum of thirty alphanumeric characters. Special characters are not permitted. The pluggable database name should not be same as the container database name.
+- container_database_admin_password: The DB system administrator password of the Container Database.
+- defined_tags: Defined tags for this resource. Each key is predefined and scoped to a namespace.
+- freeform_tags: Free-form tags for this resource. Each tag is a simple key-value pair with no predefined name, type, or namespace.
+- kms_key_version_id: OCID of the Master Encryption Key Version, if using Key Management Service (KMS) key rotation. 
+- pdb_admin_password:  A strong password for PDB Admin. The password must be at least nine characters and contain at least two uppercase, two lowercase, two numbers, and two special characters. The special characters must be _, #, or -.
+- pdb_creation_type_details: The Pluggable Database creation type. [See details](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_pluggable_database#pdb_creation_type_details-2)
+- should_create_pdb_backup: Indicates whether to take Pluggable Database Backup after the operation.
+- should_pdb_admin_account_be_locked: The locked mode of the pluggable database admin account. If false, the user needs to provide the PDB Admin Password to connect to it. If true, the pluggable database will be locked and user cannot login to it.
+- tde_wallet_password: The existing TDE wallet password of the CDB.
+
+
 
 ## OCI Landing Zones Modules Collection
 This repository is part of a broader collection of repositories containing modules that help customers deploy and manage various OCI resources:

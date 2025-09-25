@@ -39,8 +39,8 @@ variable "cloud_vm_clusters" {
 # Enable DM HOME creation in the example
 variable "cloud_db_homes" {
   description = "DB homes to be created."
-  type    = any
-  default = null
+  type        = any
+  default     = null
 }
 # Enable CDB+PDB creation in the example
 variable "databases_config" {
