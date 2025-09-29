@@ -5,7 +5,7 @@ locals {
     for dbhome_key, dbhome in coalesce(var.cloud_db_homes, {}) :
     dbhome_key => merge(dbhome, {
       # Resolve VM Cluster ID: use as-is if OCID, or reference created VM cluster by key
-      #vm_cluster_id = can(regex("^ocid1\\.vmcluster", dbhome.vm_cluster_id)) ? dbhome.vm_cluster_id : try(oci_database_cloud_vm_cluster.these[dbhome.vm_cluster_id].id, null)
+      vm_cluster_id = can(regex("^ocid1\\.vmcluster", dbhome.vm_cluster_id)) ? dbhome.vm_cluster_id : try(oci_database_cloud_vm_cluster.these[dbhome.vm_cluster_id].id, null)
     })
   }
 }
@@ -40,7 +40,7 @@ resource "oci_database_db_home" "these" {
   # Database(s) under DB Home
   # ----------------------------
   dynamic "database" {
-    for_each = lookup(each.value, "database", [])
+    for_each = each.value.database != null ? each.value.database : {}
 
     content {
       admin_password = sensitive(lookup(database.value, "admin_password", null))

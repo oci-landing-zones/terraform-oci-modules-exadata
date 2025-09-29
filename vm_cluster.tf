@@ -16,6 +16,12 @@ locals {
   }) }
 }
 
+data "oci_database_db_servers" "these" {
+  for_each                  = local.cloud_vm_clusters
+  compartment_id            = each.value.compartment_id
+  exadata_infrastructure_id = each.value.exadata_infra_id
+}
+
 resource "oci_database_cloud_vm_cluster" "these" {
   depends_on = [oci_database_cloud_exadata_infrastructure.these]
 
@@ -46,7 +52,7 @@ resource "oci_database_cloud_vm_cluster" "these" {
   time_zone                   = each.value.time_zone
   cluster_name                = each.value.cluster_name
   data_storage_percentage     = each.value.data_storage_percentage
-  db_servers                  = each.value.db_servers
+  db_servers                  = contains(each.value.db_servers, "ALL") ? [for db_server in data.oci_database_db_servers.these[each.key].db_servers : db_server.id] : each.value.db_servers
   domain                      = each.value.domain
   license_model               = each.value.license_model
   ocpu_count                  = each.value.ocpu_count
