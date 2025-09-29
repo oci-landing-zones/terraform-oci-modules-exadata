@@ -11,12 +11,12 @@
 # Tenancy Connectivity Variables
 #---------------------------------------
 
-#tenancy_ocid         = "<REPLACE-WITH-TENANCY-OCID>" # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
-#user_ocid            = "<REPLACE-WITH-USER-OCID>"    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
-#fingerprint          = "<REPLACE-WITH-FINGERPRINT>"   # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
-#private_key_path     = "<REPLACE-WITH-PRIVATE-KEY-PATH>"  # This is the full path on your local system to the API signing private key.
-#private_key_password = ""                                  # This is the password that protects the private key, if any.
-#region               = "<REPLACE-WITH-REGION>"             # The region name.
+tenancy_ocid         = "<REPLACE-WITH-TENANCY-OCID>" # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
+user_ocid            = "<REPLACE-WITH-USER-OCID>"    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
+fingerprint          = "<REPLACE-WITH-FINGERPRINT>"   # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
+private_key_path     = "<REPLACE-WITH-PRIVATE-KEY-PATH>"  # This is the full path on your local system to the API signing private key.
+private_key_password = ""                                  # This is the password that protects the private key, if any.
+region               = "<REPLACE-WITH-REGION>"             # The region name.
 
 #---------------------------------------
 # Input variable
@@ -197,65 +197,28 @@ databases_config = {
       db_name        = "CDB1"
 
       #optional
-      #backup_id = #<<Required when source=DB_BACKUP>>
-      #backup_tde_password = #<<Required when source=DB_BACKUP>>
       character_set  = "AL32UTF8"
-      #database_admin_password = #<<Required when source=DATAGUARD>>
-      #database_software_image_id = #<<Optional value>>
       db_backup_config = {
         auto_backup_enabled = "true"
         auto_backup_window = "SLOT_ONE" #<<If no option is selected, a start time between 12:00 AM to 7:00 AM in the region of the database is automatically chosen.>>
         auto_full_backup_day = "SUNDAY" #<<If no option is selected, the value is null and we will default to Sunday.>>
         auto_full_backup_window = "SLOT_TWO" #<<If no option is selected, a start time between 12:00 AM to 7:00 AM in the region of the database is automatically chosen.>>
         backup_deletion_policy = "DELETE_AFTER_RETENTION_PERIOD"
-        #backup_destination_details = {
-        #  dbrs_policy_id = "<<OCID for DBRS policy>>"
-        #  #id             = "<<OCID of the protected database destination"
-        #  #is_remote = #<<Indicates whether the backup destination is cross-region or local region.>>
-        #  #remote_region = #<<The name of the remote region where the remote automatic incremental backups will be stored.>>
-        #  type = "DBRS" # options are DBRS, OBJECT_STORE
-        #  #vpc_password = #<<For a RECOVERY_APPLIANCE backup destination, the password for the VPC user that is used to access the Recovery Appliance.>>
-        #  vpc_user = "<<For a RECOVERY_APPLIANCE backup destination, the Virtual Private Catalog (VPC) user that is used to access the Recovery Appliance>>"
-        # }
         recovery_window_in_days   = "35" #<<recoveryWindow cannot have value for Backup destination as Database Recovery System.>
         run_immediate_full_backup = "false"
         }
       db_unique_name = "CDB1_vp_fra"
       db_workload    = "OLTP"
       defined_tags = {}
-      #encryption_key_location_details = {
-      #  provider_type = "<<TYPE>>" #<<Types of providers supported for managing database encryption keys>>
-      #  #azure_encryption_key_id = #<<The ID of the Azure Key Vault key.>>
-      #  hsm_password = "<<password>>" #<<The password of the HSM user.>>
-      #}
       freeform_tags = {}
-      #key_store_id = #<<The OCID of the key store of Oracle Vault.>>
-      #is_active_data_guard_enabled = #<<Applicable when source=DATAGUARD>>
-      #kms_key_id = #<< The OCID of the key container that is used as the master encryption key in database transparent data encryption (TDE) operations.>>
-      #kms_key_version_id = #<<The OCID of the key container version that is used in database transparent data encryption (TDE) operations KMS Key can have multiple key versions. If none is specified, the current key version (latest) of the Key Id is used for the operation.>>
       ncharacter_set = "AL16UTF16" #The default is AL16UTF16. Allowed values are: AL16UTF16 or UTF8.
 
       # Create initial PDB during CDB creation
       pdb_name       = "PDB1A" #The name must begin with an alphabetic character and can contain a maximum of thirty alphanumeric characters. Special characters are not permitted. Pluggable database should not be same as database name.
-      #pluggable_databases = #<<(Applicable when source=DB_BACKUP) The list of pluggable databases that needs to be restored into new database.>>
-      #protection_mode = #<<(Required when source=DATAGUARD) The protection mode of this Data Guard. >>
+      }
       sid_prefix = "cdb1"
-      #source_database_id = #<<(Required when source=DATAGUARD) The OCID of the source database.>>
-      #source_encryption_key_location_details = {
-      #  provider_type = "<<TYPE>>" #<<Types of providers supported for managing database encryption keys>>
-      #  #azure_encryption_key_id = #<<The ID of the Azure Key Vault key.>>
-      #  hsm_password = "<<password>>" #<<The password of the HSM user.>>
-      #}
-      #source_tde_wallet_password = #<<(Required when source=DATAGUARD) The TDE wallet password of the source database specified by 'sourceDatabaseId'.>>
       tde_wallet_password = "<REPLACE-WITH-STRONG-PASSWORD>"
-      #transport_type = #<<(Required when source=DATAGUARD) The redo transport type to use for this Data Guard association>>
-      #vault_id = #<<(Applicable when source=NONE) The OCID of the Oracle Cloud Infrastructure vault. This parameter and secretId are required for Customer Managed Keys.>> 
-    }
-    #key_store_id = #The OCID of the key store of Oracle Vault.
-    #db_version = #<<(Optional) A valid Oracle Database version. For a list of supported versions, use the ListDbVersions operation.>>
-    #kms_key_id = #The OCID of the key container that is used as the master encryption key in database transparent data encryption (TDE) operations.
-    #kms_key_version_id = <<Optional value not found in discovery>>
-  }
+   }
 }
 
 
@@ -268,21 +231,8 @@ pluggable_databases_config= {
      pdb_name              = "PDB1B" #The name for the pluggable database (PDB). The name is unique in the context of a container database. The name must begin with an alphabetic character and can contain a maximum of thirty alphanumeric characters. Special characters are not permitted. The pluggable database name should not be same as the container database name.
      pdb_admin_password                = "<REPLACE-WITH-STRONG-PASSWORD>"
 
-     #container_database_admin_password = optional(string) # Sensitive
      defined_tags                      = {}
      freeform_tags                     = {}
-     #kms_key_version_id                = #<<The OCID of the key container that is used as the master encryption key in database transparent data encryption (TDE) operations.>>
-     #pdb_creation_type_details = {     # << Optional if the PDB is local or remote clone or relocate pdb>>
-     #  creation_type                = 
-     #  source_pluggable_database_id = 
-     #  dblink_user_password         = 
-     #  dblink_username              = 
-     #  is_thin_clone                = 
-     #  refreshable_clone_details = {
-     #    is_refreshable_clone = 
-     #  }
-     #  source_container_database_admin_password = # Sensitive
-     #}
      should_create_pdb_backup           = "false"
      should_pdb_admin_account_be_locked = "false"
      tde_wallet_password                = "<REPLACE-WITH-STRONG-PASSWORD>" #The existing TDE wallet password of the CDB.
