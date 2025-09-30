@@ -18,13 +18,13 @@ resource "oci_database_pluggable_database" "these" {
   for_each = nonsensitive(local.pluggable_databases)
   #Required
   container_database_id = each.value.container_database_id
-  pdb_name = each.value.pdb_name
+  pdb_name              = each.value.pdb_name
   #Optional
-  container_database_admin_password = each.value.container_database_admin_password 
-  defined_tags = each.value.defined_tags
-  freeform_tags = each.value.freeform_tags
-  kms_key_version_id = each.value.kms_key_version_id 
-  pdb_admin_password = each.value.pdb_admin_password
+  container_database_admin_password = each.value.container_database_admin_password
+  defined_tags                      = each.value.defined_tags
+  freeform_tags                     = each.value.freeform_tags
+  kms_key_version_id                = each.value.kms_key_version_id
+  pdb_admin_password                = each.value.pdb_admin_password
   dynamic "pdb_creation_type_details" {
     for_each = each.value.pdb_creation_type_details != null ? [each.value.pdb_creation_type_details] : []
     content {
@@ -33,7 +33,7 @@ resource "oci_database_pluggable_database" "these" {
       dblink_user_password         = pdb_creation_type_details.value.dblink_user_password
       dblink_username              = pdb_creation_type_details.value.dblink_username
       is_thin_clone                = pdb_creation_type_details.value.is_thin_clone
-      dynamic refreshable_clone_details {
+      dynamic "refreshable_clone_details" {
         for_each = try(pdb_creation_type_details.value.refreshable_clone_details, null) != null ? [pdb_creation_type_details.value.refreshable_clone_details] : []
         content {
           is_refreshable_clone = refreshable_clone_details.value.is_refreshable_clone
@@ -42,9 +42,9 @@ resource "oci_database_pluggable_database" "these" {
       source_container_database_admin_password = pdb_creation_type_details.value.source_container_database_admin_password # Sensitive
     }
   }
-  should_create_pdb_backup = each.value.should_create_pdb_backup
+  should_create_pdb_backup           = each.value.should_create_pdb_backup
   should_pdb_admin_account_be_locked = each.value.should_pdb_admin_account_be_locked
-  tde_wallet_password = each.value.tde_wallet_password
+  tde_wallet_password                = each.value.tde_wallet_password
 
   lifecycle {
     ignore_changes = [
@@ -53,5 +53,11 @@ resource "oci_database_pluggable_database" "these" {
       container_database_admin_password,
       pdb_admin_password
     ]
+  }
+
+  timeouts {
+    create = "60m"
+    update = "60m"
+    delete = "120m"
   }
 }
