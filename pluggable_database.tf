@@ -15,7 +15,7 @@ locals {
 }
 
 resource "oci_database_pluggable_database" "these" {
-  for_each = nonsensitive(local.pluggable_databases)
+  for_each = local.pluggable_databases
   #Required
   container_database_id = each.value.container_database_id
   pdb_name              = each.value.pdb_name
