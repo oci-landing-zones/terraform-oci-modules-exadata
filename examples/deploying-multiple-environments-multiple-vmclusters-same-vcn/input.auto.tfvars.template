@@ -43,17 +43,18 @@ network_dependency = {
     "EXA-BACKUP-SUBNET-KEY-2" = { id = "<REPLACE-WITH-SUBNET-OCID>" }
   }
 }
+
 default_compartment_id = "CMP-1"
 default_freeform_tags  = {}
 default_defined_tags   = {}
 
 cloud_exadata_infrastructures = {
   default_maintenance_window = {
-    preference                    = "NO_PREFERENCE"
-    months                        = ["JANUARY"]
-    weeks_of_month                = [2]
-    days_of_week                  = ["Monday"]
-    hours_of_day                  = [0, 4]
+    preference     = "NO_PREFERENCE"
+    months         = ["JANUARY"]
+    weeks_of_month = [2]
+    days_of_week   = ["Monday"]
+    hours_of_day   = [0, 4]
   }
 
   cloud_exadata_infrastructure_configuration = {
@@ -87,30 +88,29 @@ cloud_exadata_infrastructures = {
   }
 }
 
-# ----------------------------
-# This is to multiple VM Clusters using the same VCN with different subnets 
-# ----------------------------
-
 cloud_vm_clusters = {
 
   # ----------------------------
   # This is to create the first VM Cluster 
   # ----------------------------
 
-  PROD-EXA1-CL01-KEY = {
+  MY-VM-CLUSTER-1 = {
     compartment_id            = "CMP-1"
-    display_name              = "VMCluster1"
-    exadata_infrastructure_id = "My-Exadata-Infra-3"
+    display_name              = "MY-VM-Cluster-1"
+    exadata_infrastructure_id = "My-Exadata-Infra-1"
+    db_servers                = ["ALL"]
 
     # ---- networking----
-    subnet_id              = "EXA-SUBNET-KEY-1"            ## "ocid1.subnet.oc1.." replace with client subnet OCID 
-    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY-1"     ## "ocid1.subnet.oc1.." replace with backup subnet OCID 
+    subnet_id              = "EXA-SUBNET-KEY-1"        ## "ocid1.subnet.oc1.."
+    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY-1" ## "ocid1.subnet.oc1.."
     nsg_ids                = ["NSG-EXA-CLIENT-KEY-1"]
     backup_network_nsg_ids = ["NSG-EXA-BACKUP-KEY-1"]
 
     # ---- sizing ----
-    memory_size_in_gbs = 60
-    cpu_core_count = 16
+    memory_size_in_gbs          = 60
+    db_node_storage_size_in_gbs = 120
+    data_storage_size_in_tbs    = 2
+    cpu_core_count              = 16
 
     scan_listener_port_tcp     = 1521
     scan_listener_port_tcp_ssl = 2484
@@ -124,7 +124,7 @@ cloud_vm_clusters = {
     system_version  = "25.1.6.0.0.250622"
     hostname        = "abc"
     cluster_name    = "clust01"
-    ssh_public_keys = ["<REPLACE WITH SSH PUBLIC KEY>"]
+    ssh_public_keys = ["<REPLACE-WITH-SSH-PUBLIC-KEY>"]
     license_model   = "LICENSE_INCLUDED"
 
     # ---- optional extras ----
@@ -158,37 +158,41 @@ cloud_vm_clusters = {
     # file system config
     file_system_configuration_details = {
       "U01" = {
-        file_system_size_gb = 27
+        file_system_size_gb = 20
         mount_point         = "/u01"
       },
       "HOME" = {
-        file_system_size_gb = 17
+        file_system_size_gb = 4
         mount_point         = "/home"
       }
       "VAR" = {
-        file_system_size_gb = 7
+        file_system_size_gb = 5
         mount_point         = "/var"
       }
     }
   }
 
   # ----------------------------
-  # This is to create the second VM Cluster 
+  # This is to create the second VM Cluster using a different VCN 
   # ----------------------------
 
-  PROD-EXA1-CL02-KEY = {
+  MY-VM-CLUSTER-2 = {
     compartment_id            = "CMP-1"
     display_name              = "VMCluster2"
-    exadata_infrastructure_id = "My-Exadata-Infra-3"
+    exadata_infrastructure_id = "My-Exadata-Infra-1"
+    db_servers                = ["ALL"]
 
     # ---- networking----
-    subnet_id              = "EXA-SUBNET-KEY-2"            ## "ocid1.subnet.oc1.." replace with client subnet OCID 
-    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY-2"     ## "ocid1.subnet.oc1.." replace with backup subnet OCID 
+    subnet_id              = "EXA-SUBNET-KEY-2"        ## "ocid1.subnet.oc1.." replace with client subnet OCID from VCN2
+    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY-2" ## "ocid1.subnet.oc1.." replace with backup subnet OCID from VCN2
     nsg_ids                = ["NSG-EXA-CLIENT-KEY-2"]
     backup_network_nsg_ids = ["NSG-EXA-BACKUP-KEY-2"]
 
     # ---- sizing ----
-    cpu_core_count = 16
+    memory_size_in_gbs          = 60
+    db_node_storage_size_in_gbs = 120
+    data_storage_size_in_tbs    = 2
+    cpu_core_count              = 16
 
     scan_listener_port_tcp     = 1521
     scan_listener_port_tcp_ssl = 2484
@@ -202,7 +206,7 @@ cloud_vm_clusters = {
     system_version  = "25.1.6.0.0.250622"
     hostname        = "abc"
     cluster_name    = "clust02"
-    ssh_public_keys = ["<REPLACE WITH SSH PUBLIC KEY>"]
+    ssh_public_keys = ["<REPLACE-WITH-SSH-PUBLIC-KEY>"]
     license_model   = "LICENSE_INCLUDED"
 
     # ---- optional extras ----
@@ -236,17 +240,18 @@ cloud_vm_clusters = {
     # file system config
     file_system_configuration_details = {
       "U01" = {
-        file_system_size_gb = 27
+        file_system_size_gb = 20
         mount_point         = "/u01"
       },
       "HOME" = {
-        file_system_size_gb = 17
+        file_system_size_gb = 4
         mount_point         = "/home"
       }
       "VAR" = {
-        file_system_size_gb = 7
+        file_system_size_gb = 5
         mount_point         = "/var"
       }
     }
   }
 }
+

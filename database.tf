@@ -27,7 +27,7 @@ locals {
 # The admin_password must conform to the strong policy and is reused for SYS/SYSTEM, TDE wallet, and PDB Admin
 resource "oci_database_database" "these" {
   # Strip sensitivity for iteration keys; values remain sensitive in use.
-  for_each = nonsensitive(local.databases)
+  for_each = local.databases
 
   #Required
   source     = each.value.source
