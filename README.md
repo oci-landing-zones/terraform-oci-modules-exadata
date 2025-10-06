@@ -1,19 +1,39 @@
 # OCI Landing Zones Exadata Module
 ![Landing_Zone_Logo](./landing_zone_300.png)
 
-This repository contains Terraform OCI (Oracle Cloud Infrastructure) modules for Exadata related resources that help customers deploy and manage Exadata infrastructure on OCI.
+## Table of Contents
+
+1. [Early Preview Disclaimer](#early-preview)
+1. [Overview](#overview)
+1. [Module Inputs](#module-inputs)
+1. [Cloud Exadata Infrastructures](#cloud-exadata-infrastructures)    
+1. [Cloud VM Clusters](#cloud-vm-clusters)
+1. [Cloud DB Homes](#cloud-db-homes)
+1. [Databases](#databases)
+1. [Pluggable Databases](#pluggable-databases)
+1. [OCI Landing Zones Modules Collection](#modules-collection)
+1. [Contributing](#contributing)
+1. [License](#license)
+1. [Known Issues](#known-issues)
+
+
+## <a name="early-preview">Early Preview Disclaimer</a>
+This is an early preview version. It is still under development, with on-going testing and validation. As such, it may contain bugs, incomplete features, and unexpected behavior. This is NOT intended for production use.
+
+## <a name="overview">Overview</a>
+This repository contains Terraform OCI (Oracle Cloud Infrastructure) modules for resources that help customers deploy and manage Exadata Database Service on Dedicated Infrastructure on OCI.
 
 The following resources are available:
 
-Exadata Infrastructure
-VM Clusters
-Database
-Database Home
-Pluggable Database
+- Exadata Infrastructure
+- VM Clusters
+- Database Home
+- Container Database
+- Pluggable Database
 
 This module supports being passed an object containing references to OCIDs (Oracle Cloud IDs) that they may depend on. Every input attribute that expects an OCID (typically, attribute names ending in _id or _ids) can be given either a literal OCID or a reference (a key) to the OCID. While these OCIDs can be literally obtained from their sources and pasted when setting the modules input attributes, a superior approach is automatically consuming the outputs of producing modules. For instance, the Exadata Infrastructure module may depend on compartments and networks for deployment. It can be passed a compartments_dependency map and a network_dependency map with objects representing compartments and networks produced by other modules. The external dependency approach helps with the creation of loosely coupled Terraform configurations with clearly defined dependencies between them, avoiding copying and pasting OCIDs.
 
-## Module Inputs
+## <a name="module-inputs">Module Inputs</a>
 The module accepts the following input variables:
 
 ### General
@@ -25,7 +45,7 @@ The module accepts the following input variables:
 - default_defined_tags: Default defined tags for all resources.
 - default_freeform_tags: Default freeform tags for all resources.
 
-### Cloud Exadata Infrastructure
+### <a name="cloud-exadata-infrastructures">Cloud Exadata Infrastructures</a>
 - cloud_exadata_infrastructures: Exadata infrastructure configuration. This is an object with the following attributes:
   - default_maintenance_window: Default maintenance window configuration.
   - cloud_exadata_infrastructure_configuration: A map of Exadata infrastructure configurations.
@@ -50,8 +70,8 @@ subscription_id: Subscription ID of the Exadata infrastructure.
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_cloud_exadata_infrastructure](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_exadata_infrastructure)
 
 
-### Cloud VM Clusters
-- cloud_vm_clusters: OCI Database Cloud VM Cluster Configuration. This is a map of VM cluster configurations.
+### <a name="cloud-vm-clusters">Cloud VM Clusters</a>
+- cloud_vm_clusters: OCI Database Cloud Exadata VM Cluster Configuration. This is a map of VM cluster configurations.
 
 Each Cloud VM cluster configuration object has the following attributes:
 - backup_subnet_id: Backup subnet ID of the VM cluster.
@@ -98,7 +118,7 @@ These attributes are not updatable after initial resource creation:
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_cloud_vm_cluster](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_vm_cluster)
 
 
-### Cloud DB Homes
+### <a name="cloud-db-homes">Cloud DB Homes</a>
 - cloud_db_homes: OCI Database Cloud Database Home Configuration. This is a map of DB Home configurations.
 
 Each DB Home object has the following attributes:
@@ -123,8 +143,8 @@ These attributes are not updatable after initial resource creation
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_db_home](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_db_home)
 
 
-### Databases
-- databases_config: OCI Database Configuration. This is a map of database configurations. 
+### <a name="databases">Databases</a>
+- databases_config: OCI Container Database Configuration. This is a map of database configurations. 
 
 Each Database Configuration object has the following attributes:
 - database: Details for creating a database.
@@ -142,8 +162,8 @@ These attributes are not updatable after initial resource creation:
 
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_database](https://docs.oracle.com/en-us/iaas/tools/terraform-provider-oci/7.20.0/docs/r/database_database.html)
 
-### Pluggable Databases
-- pluggable_databases_config: OCI Database Pluggable Database Configuration. This is a map of PDB configurations.
+### <a name="pluggable-databases">Pluggable Databases</a>
+- pluggable_databases_config: OCI Pluggable Database Configuration. This is a map of PDB configurations.
 
 Each PDB Configuration object has the following attributes:
 - container_database_id: The OCID or key of the CDB.
@@ -159,12 +179,11 @@ Each PDB Configuration object has the following attributes:
 - tde_wallet_password: The existing TDE wallet password of the CDB.
 
 
-
-## OCI Landing Zones Modules Collection
+## <a name="modules-collection">OCI Landing Zones Modules Collection</a>
 This repository is part of a broader collection of repositories containing modules that help customers deploy and manage various OCI resources:
 
-- [Exadata - current repository](https://github.com/)
-- [Identity & Access Management](https://github.com/oracle-quickstart/terraform-oci-cis-landing-zone-iam) - current repository
+- [Exadata](https://github.com/oci-landing-zones/terraform-oci-modules-exadata) - current repository
+- [Identity & Access Management](https://github.com/oracle-quickstart/terraform-oci-cis-landing-zone-iam)
 - [Networking](https://github.com/oracle-quickstart/terraform-oci-cis-landing-zone-networking)
 - [Governance](https://github.com/oracle-quickstart/terraform-oci-cis-landing-zone-governance)
 - [Security](https://github.com/oracle-quickstart/terraform-oci-cis-landing-zone-security)
@@ -175,15 +194,17 @@ The modules in this collection are designed for flexibility, are straightforward
 
 Using these modules does not require a user extensive knowledge of Terraform or OCI resource types usage. Users declare a JSON object describing the OCI resources according to each module’s specification and minimal Terraform code to invoke the modules. The modules generate outputs that can be consumed by other modules as inputs, allowing for the creation of independently managed operational stacks to automate your entire OCI infrastructure.
 
-## Contributing
+## <a name="contributing">Contributing</a>
 See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## License
+## <a name="license">License</a>
 Copyright (c) 2025, Oracle and/or its affiliates.
 
 Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 See [LICENSE](./LICENSE) for more details.
 
-## Known Issues
-None.
+## <a name="known-issues">Known Issues</a>
+1.  The PDB creation might fail if the DB creation is in progress. solution: run "terraform apply" again and it will resume from where it left off.
+2. When creating multiple DB Homes in the same VM Cluster, this error may occur. "The operation cannot be performed because Db System is in UPDATING state." solution: run "terraform apply" again and it will resume from where it left off.
+3. Each resource may take several hours to provision, so the terraform apply session may last 10+ hours. If terraform apply gets interrupted due to VPN disconnecting or other issues, run "terraform apply" again and it will resume from where it left off.
