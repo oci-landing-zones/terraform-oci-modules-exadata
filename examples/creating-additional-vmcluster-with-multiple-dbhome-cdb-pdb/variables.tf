@@ -45,14 +45,12 @@ variable "cloud_db_homes" {
 # Enable CDB+PDB creation in the example
 variable "databases_config" {
   description = "Databases (CDB + initial PDB) to create for this example. Keys are arbitrary unique names."
-  sensitive   = true
   type        = any
   default     = null
 }
 # Enable CDB+PDB creation in the example
 variable "pluggable_databases_config" {
   description = "Additional pluggable databases to create for this example."
-  sensitive   = true
   type        = any
   default     = null
 }
