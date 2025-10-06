@@ -5,6 +5,7 @@
 
 1. [Early Preview Disclaimer](#early-preview)
 1. [Overview](#overview)
+1. [Pre-requisites](#Pre-requisites)
 1. [Module Inputs](#module-inputs)
 1. [Cloud Exadata Infrastructures](#cloud-exadata-infrastructures)    
 1. [Cloud VM Clusters](#cloud-vm-clusters)
@@ -32,6 +33,36 @@ The following resources are available:
 - Pluggable Database
 
 This module supports being passed an object containing references to OCIDs (Oracle Cloud IDs) that they may depend on. Every input attribute that expects an OCID (typically, attribute names ending in _id or _ids) can be given either a literal OCID or a reference (a key) to the OCID. While these OCIDs can be literally obtained from their sources and pasted when setting the modules input attributes, a superior approach is automatically consuming the outputs of producing modules. For instance, the Exadata Infrastructure module may depend on compartments and networks for deployment. It can be passed a compartments_dependency map and a network_dependency map with objects representing compartments and networks produced by other modules. The external dependency approach helps with the creation of loosely coupled Terraform configurations with clearly defined dependencies between them, avoiding copying and pasting OCIDs.
+
+## <a name="Pre-requisites">Pre-requisites</a>
+
+Before deploying the Exadata Cloud Infrastructure, VM Cluster, Database Home, Database, and PDB resources, ensure the following prerequisites are met:
+
+- [**IAM Policies**](https://docs.oracle.com/en-us/iaas/exadatacloud/doc/ecs-policy-details.html)  
+  Ensure you have access to an active OCI Tenancy with sufficient permissions to create networking and database resources.
+
+- [**Virtual Cloud Network (VCN)**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm#top)  
+  A VCN must be created in the target region where the Exadata Infrastructure will reside.
+
+- [**Subnets**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_subnet.htm#top)  
+  You must have at least two subnets available for Exadata infrastructure and VM clusters:
+  - **Client Subnet:** For database client connections  
+  - **Backup Subnet:** For Object Storage and backup operations  
+
+  Subnets can be:
+  - Private (recommended for Exadata)  
+  - Created in the same Availability Domain as the Exadata infrastructure  
+
+  Each subnet must have:
+  - A valid Route Table  
+  - Security Lists or Network Security Groups (NSGs) configured for required ingress/egress
+
+- [**Route Tables and Gateways**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingroutetables.htm)  
+  Ensure that the subnet attached to the Exadata infrastructure can reach OCI Object Storage, required for backups and wallet access.  
+
+  You can configure this using either:
+  - [A **Service Gateway**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/servicegateway.htm) — for private subnet access to Object Storage, or  
+  - [An **Internet Gateway**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/managingIGs.htm) — if using a public subnet.
 
 ## <a name="module-inputs">Module Inputs</a>
 The module accepts the following input variables:
