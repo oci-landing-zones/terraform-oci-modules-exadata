@@ -173,9 +173,8 @@ cloud_db_homes = {
     # ----------------------------
     # Create Database Home on an existing VM Cluster
     # ----------------------------
-    # vm_cluster_id  = "My-VMCluster-2"   # can be key from vm_clusters map or direct OCID
-    vm_cluster_id  = "ocid1.cloudvmcluster.oc1.eu-frankfurt-1.aaaa" # required if source = VM_CLUSTER_NEW
-    display_name   = "MyDBHome1"
+    vm_cluster_id  = "ocid1.cloudvmcluster.oc1.eu-frankfurt-1.aaaa" # OCID of existing VM cluster; required if source = VM_CLUSTER_NEW;
+    display_name   = "DBHome01"
     db_version     = "19.0.0.0"
     description    = "DB Home Config" # optional
     source         = "VM_CLUSTER_NEW" # optional (default = VM_CLUSTER_NEW)
@@ -203,7 +202,7 @@ databases_config = {
   CDB1 = {
     #Required
     source = "NONE"
-    db_home_id     = "<<DB Home Name or OCID>>"        # References the DB Home defined above (or a DB Home OCID)
+    db_home_id     = "dbhome1"        # References the DB Home defined above (or a DB Home OCID)
     database = {
       # Required
       admin_password = "<<Strong password>>"
@@ -272,7 +271,7 @@ databases_config = {
   CDB2 = {
     #Required
     source = "NONE"
-    db_home_id     = "<<DB Home Name or OCID>>"        # References the DB Home defined above (or a DB Home OCID)
+    db_home_id     = "dbhome1"        # References the DB Home defined above (or a DB Home OCID)
     database = {
       # Required
       admin_password = "<<Strong password>>"
