@@ -56,8 +56,8 @@ resource "oci_database_pluggable_database" "these" {
   }
 
   timeouts {
-    create = "60m"
-    update = "60m"
+    create = "120m"
+    update = "120m"
     delete = "120m"
   }
 }
