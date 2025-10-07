@@ -102,16 +102,6 @@ resource "oci_database_db_home" "these" {
         }
       }
 
-      # dynamic "source_encryption_key_location_details" {
-      #   for_each = lookup(database.value, "source_encryption_key_location_details", [])
-
-      #   content {
-      #     provider_type           = lookup(source_encryption_key_location_details.value, "provider_type", null)
-      #     azure_encryption_key_id = lookup(source_encryption_key_location_details.value, "azure_encryption_key_id", null)
-      #     hsm_password            = lookup(source_encryption_key_location_details.value, "hsm_password", null)
-      #   }
-      # }
-
       # PITR
       time_stamp_for_point_in_time_recovery = lookup(database.value, "time_stamp_for_point_in_time_recovery", null)
 
