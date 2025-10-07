@@ -3,7 +3,6 @@
 
 
 #--------------------------------------------------------------------------------------------------------------------------------------
-# This Example is for creating Exadata Cloud Infrastructure, Multiple VM Clusters using same VCN different subnets with multiple Database Homes with Multiple Container Databases (CDBs) and Pluggable Databases (PDBs) 
 # 1. Rename this file to <project-name>.auto.tfvars, where <project-name> is a name of your choice.
 # 2. Provide values for "Tenancy Connectivity Variables".
 # 3. Replace <REPLACE-BY-*> placeholders with appropriate values.
@@ -13,12 +12,12 @@
 # Tenancy Connectivity Variables
 #---------------------------------------
 
-#tenancy_ocid         = "<REPLACE-WITH-TENANCY-OCID>" # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
-#user_ocid            = "<REPLACE-WITH-USER-OCID>"    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
-#fingerprint          = "<REPLACE-WITH-FINGERPRINT>"   # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
-#private_key_path     = "<REPLACE-WITH-PRIVATE-KEY-PATH>"  # This is the full path on your local system to the API signing private key.
-#private_key_password = ""                                  # This is the password that protects the private key, if any.
-#region               = "<REPLACE-WITH-REGION>"             # The region name.
+tenancy_ocid         = "<REPLACE-WITH-TENANCY-OCID>" # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
+user_ocid            = "<REPLACE-WITH-USER-OCID>"    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
+fingerprint          = "<REPLACE-WITH-FINGERPRINT>"   # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
+private_key_path     = "<REPLACE-WITH-PRIVATE-KEY-PATH>"  # This is the full path on your local system to the API signing private key.
+private_key_password = ""                                  # This is the password that protects the private key, if any.
+region               = "<REPLACE-WITH-REGION>"             # The region name.
 
 #---------------------------------------
 # Input variable
