@@ -8,7 +8,7 @@ It deploys the following resources:
   - one VM cluster
     - one Database Home
       - one Container Database
-        - one Pluggable Database
+        - two Pluggable Database
 
 See [input.auto.tfvars.template](./input.auto.tfvars) for resource configuration. 
 See [Module's README.md](../../README.md) for overall attributes usage.

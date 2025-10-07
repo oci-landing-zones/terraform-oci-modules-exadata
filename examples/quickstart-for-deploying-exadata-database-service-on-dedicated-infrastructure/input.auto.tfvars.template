@@ -28,10 +28,6 @@ compartments_dependency = {
 }
 
 network_dependency = {
-  network_security_groups = {
-    "NSG-EXA-CLIENT-KEY" = { id = "<REPLACE-WITH-NSG-OCID>" }
-    "NSG-EXA-BACKUP-KEY" = { id = "<REPLACE-WITH-NSG-OCID>" }
-  }
   subnets = {
     "EXA-SUBNET-KEY"        = { id = "<REPLACE-WITH-SUBNET-OCID>" }
     "EXA-BACKUP-SUBNET-KEY" = { id = "<REPLACE-WITH-SUBNET-OCID>" }
@@ -94,8 +90,6 @@ cloud_vm_clusters = {
     # ---- networking----
     subnet_id              = "EXA-SUBNET-KEY"        ## or "ocid1.subnet.oc1.."
     backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY" ## or "ocid1.subnet.oc1.."
-    nsg_ids                = ["NSG-EXA-CLIENT-KEY"]
-    backup_network_nsg_ids = ["NSG-EXA-BACKUP-KEY"]
 
     # ---- sizing ----
     memory_size_in_gbs          = 60
@@ -121,23 +115,6 @@ cloud_vm_clusters = {
     # ---- optional extras ----
     is_local_backup_enabled = true
     time_zone               = "UTC"
-
-    # ================================
-    # Automation update Details
-    # ================================
-    cloud_automation_update_details = {
-      #Optional
-      apply_update_time_preference = {
-        apply_update_preferred_end_time   = "06:00"
-        apply_update_preferred_start_time = "00:00"
-      }
-      freeze_period = {
-        freeze_period_end_time   = "2025-10-05"
-        freeze_period_start_time = "2025-10-01"
-      }
-      is_early_adoption_enabled = false
-      is_freeze_period_enabled  = true
-    }
 
     # Data Collection options
     data_collection_options = {
@@ -190,7 +167,7 @@ databases_config = {
   CDB1 = {
     #Required
     source = "NONE"
-    db_home_id     = "DB-HOME-1"        # References the DB Home defined above (or a DB Home OCID)
+    db_home_id     = "dbhome1"        # References the DB Home defined above (or a DB Home OCID)
     database = {
       # Required
       admin_password = "<REPLACE-WITH-STRONG-PASSWORD>"
