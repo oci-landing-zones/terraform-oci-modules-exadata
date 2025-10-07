@@ -237,5 +237,5 @@ See [LICENSE](./LICENSE) for more details.
 
 ## <a name="known-issues">Known Issues</a>
 1.  The PDB creation might fail if the DB creation is in progress. solution: run "terraform apply" again and it will resume from where it left off.
-2. When creating multiple DB Homes in the same VM Cluster, this error may occur. "The operation cannot be performed because Db System is in UPDATING state." solution: run "terraform apply" again and it will resume from where it left off.
+2. When creating multiple Database Homes. in the same VM Cluster, this error may occur. "The operation cannot be performed because the Db System with ID ocid1... is in the UPDATING state." solution: run "terraform apply" again and it will resume from where it left off.
 3. Each resource may take several hours to provision, so the terraform apply session may last 10+ hours. If terraform apply gets interrupted due to VPN disconnecting or other issues, run "terraform apply" again and it will resume from where it left off.
