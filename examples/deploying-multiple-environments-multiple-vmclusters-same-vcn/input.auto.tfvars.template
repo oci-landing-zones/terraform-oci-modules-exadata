@@ -47,7 +47,7 @@ default_compartment_id = "CMP-1"
 default_freeform_tags  = {}
 default_defined_tags   = {}
 
-cloud_exadata_infrastructures = {
+cloud_exadata_infrastructures_configuration = {
   default_maintenance_window = {
     preference     = "NO_PREFERENCE"
     months         = ["JANUARY"]
@@ -56,7 +56,7 @@ cloud_exadata_infrastructures = {
     hours_of_day   = [0, 4]
   }
 
-  cloud_exadata_infrastructure_configuration = {
+  cloud_exadata_infrastructures = {
     "My-Exadata-Infra-1" = {
       display_name = "My-Exadata-Infra-1"
       shape        = "Exadata.X11M"
@@ -87,7 +87,7 @@ cloud_exadata_infrastructures = {
   }
 }
 
-cloud_vm_clusters = {
+cloud_vm_clusters_configuration = {
 
   # ----------------------------
   # This is to create the first VM Cluster 

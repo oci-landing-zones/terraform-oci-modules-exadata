@@ -60,7 +60,7 @@ variable "default_freeform_tags" {
   default     = {}
 }
 
-variable "cloud_exadata_infrastructures" {
+variable "cloud_exadata_infrastructures_configuration" {
   description = "Exadata infrastructure configuration."
   default     = null
   type = object({
@@ -77,7 +77,7 @@ variable "cloud_exadata_infrastructures" {
       lead_time_in_weeks = optional(number)
     }))
 
-    cloud_exadata_infrastructure_configuration = map(object({
+    cloud_exadata_infrastructures = map(object({
       # Attributes for oci_database_cloud_exadata_infrastructure (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_exadata_infrastructure)
       display_name        = string
       shape               = string           # Possible values: Exadata.X11M, Exadata.X9M, Exadata.X8M
@@ -114,31 +114,31 @@ variable "cloud_exadata_infrastructures" {
   })
 
   validation {
-    condition = var.cloud_exadata_infrastructures == null ? true : alltrue([
-      for k, v in var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration :
+    condition = var.cloud_exadata_infrastructures_configuration == null ? true : alltrue([
+      for k, v in var.cloud_exadata_infrastructures_configuration.cloud_exadata_infrastructures :
       contains(["Exadata.X11M", "Exadata.X9M", "Exadata.X8M"], v.shape)
     ])
     error_message = "Invalid shape, accepted values are Exadata.X11M, Exadata.X9M, and Exadata.X8M"
   }
 
   validation {
-    condition = var.cloud_exadata_infrastructures == null ? true : alltrue([
-      for k, v in var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration :
+    condition = var.cloud_exadata_infrastructures_configuration == null ? true : alltrue([
+      for k, v in var.cloud_exadata_infrastructures_configuration.cloud_exadata_infrastructures :
       (v.database_server_type == null || contains(["X11M-BASE", "X11M", "X11M-L", "X11M-XL"], v.database_server_type))
     ])
     error_message = "Invalid database server type, accepted values are X11M-BASE, X11M, X11M-L, and X11M-XL."
   }
 
   validation {
-    condition = var.cloud_exadata_infrastructures == null ? true : alltrue([
-      for k, v in var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration :
+    condition = var.cloud_exadata_infrastructures_configuration == null ? true : alltrue([
+      for k, v in var.cloud_exadata_infrastructures_configuration.cloud_exadata_infrastructures :
       (v.storage_server_type == null || contains(["X11M-BASE", "X11M-HC"], v.storage_server_type))
     ])
     error_message = "Invalid storage server type, accepted values are X11M-BASE and X11M-HC."
   }
 }
 
-variable "cloud_vm_clusters" {
+variable "cloud_vm_clusters_configuration" {
   description = "OCI Database Cloud VM Cluster Configuration."
   default     = null
   type = map(object({
@@ -209,8 +209,8 @@ variable "cloud_vm_clusters" {
   }))
 }
 
-variable "cloud_db_homes" {
-  description = "DB Home Config"
+variable "cloud_db_homes_configuration" {
+  description = "DB Home Configuration."
   default     = null
   type = map(object({
     # Attributes for oci_database_db_home (from https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_db_home)
@@ -280,8 +280,8 @@ variable "cloud_db_homes" {
   }))
 }
 
-variable "databases_config" {
-  description = "Configuration for the database resources"
+variable "databases_configuration" {
+  description = "Database Configuration."
   default     = null
   type = map(object({
     database = object({
@@ -348,8 +348,8 @@ variable "databases_config" {
   }))
 }
 
-variable "pluggable_databases_config" {
-  description = "Pluggable Database Config"
+variable "pluggable_databases_configuration" {
+  description = "Pluggable Database Configuration."
   default     = null
   type = map(object({
     container_database_id = string # Literal OCID or network dependency key

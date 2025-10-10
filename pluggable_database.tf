@@ -3,7 +3,7 @@
 locals {
   # Resolve references and defaults for pluggable database creation
   pluggable_databases = {
-    for key, pdb in coalesce(var.pluggable_databases_config, {}) :
+    for key, pdb in coalesce(var.pluggable_databases_configuration, {}) :
     key => merge(pdb, {
       # Resolve Container Database ID: use as-is if OCID, or reference created container DB by key
       container_database_id = can(regex("^ocid1\\.dbhome\\.", pdb.container_database_id)) ? pdb.container_database_id : try(oci_database_database.these[pdb.container_database_id].id, null)
