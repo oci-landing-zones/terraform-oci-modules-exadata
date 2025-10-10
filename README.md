@@ -87,7 +87,7 @@ Each Exadata infrastructure configuration object has the following attributes:
 - shape: Shape of the Exadata infrastructure. Accepted values are Exadata.X11M, Exadata.X9M, and Exadata.X8M.
 - compartment_id: Compartment ID of the Exadata infrastructure. Overrides default compartment ID.
 - availability_domain: Availability domain of the Exadata infrastructure.
-compute_count: Compute count of the Exadata infrastructure.
+- compute_count: Compute count of the Exadata infrastructure.
 - customer_contacts: Customer contact information.
 - database_server_type: Database server type. Accepted values are X11M-BASE, X11M, X11M-L, and X11M-XL.
 - defined_tags: Defined tags for the Exadata infrastructure.
@@ -95,7 +95,6 @@ compute_count: Compute count of the Exadata infrastructure.
 - maintenance_window: Maintenance window configuration.
 - storage_count: Storage count of the Exadata infrastructure.
 - storage_server_type: Storage server type. Accepted values are X11M-BASE and X11M-HC.
-subscription_id: Subscription ID of the Exadata infrastructure.
 - subscription_id: Subscription ID of the Exadata infrastructure.
 
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_cloud_exadata_infrastructure](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_exadata_infrastructure)
