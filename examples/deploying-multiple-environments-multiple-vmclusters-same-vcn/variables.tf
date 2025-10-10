@@ -28,11 +28,11 @@ variable "default_compartment_id" {
 }
 variable "default_defined_tags" { default = null }
 variable "default_freeform_tags" { default = null }
-variable "cloud_exadata_infrastructures" {
+variable "cloud_exadata_infrastructures_configuration" {
   type    = any
   default = null
 }
-variable "cloud_vm_clusters" {
+variable "cloud_vm_clusters_configuration" {
   type    = any
   default = null
 }

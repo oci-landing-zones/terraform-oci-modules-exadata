@@ -77,9 +77,9 @@ The module accepts the following input variables:
 - default_freeform_tags: Default freeform tags for all resources.
 
 ### <a name="cloud-exadata-infrastructures">Cloud Exadata Infrastructures</a>
-- cloud_exadata_infrastructures: Exadata infrastructure configuration. This is an object with the following attributes:
+- cloud_exadata_infrastructures_configuration: Exadata infrastructure configuration. This is an object with the following attributes:
   - default_maintenance_window: Default maintenance window configuration.
-  - cloud_exadata_infrastructure_configuration: A map of Exadata infrastructure configurations.
+  - cloud_exadata_infrastructures: A map of Exadata infrastructure configurations.
 
 Each Exadata infrastructure configuration object has the following attributes:
 
@@ -102,7 +102,7 @@ For more details on this resource, please see OCI Terraform Documentation for [o
 
 
 ### <a name="cloud-vm-clusters">Cloud VM Clusters</a>
-- cloud_vm_clusters: OCI Database Cloud Exadata VM Cluster Configuration. This is a map of VM cluster configurations.
+- cloud_vm_clusters_configuration: OCI Database Cloud Exadata VM Cluster Configuration. This is a map of VM cluster configurations.
 
 Each Cloud VM cluster configuration object has the following attributes:
 - backup_subnet_id: Backup subnet ID of the VM cluster.
@@ -175,7 +175,7 @@ For more details on this resource, please see OCI Terraform Documentation for [o
 
 
 ### <a name="databases">Databases</a>
-- databases_config: OCI Container Database Configuration. This is a map of database configurations. 
+- databases_configuration: OCI Container Database Configuration. This is a map of database configurations. 
 
 Each Database Configuration object has the following attributes:
 - database: Details for creating a database.
@@ -194,7 +194,7 @@ These attributes are not updatable after initial resource creation:
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_database](https://docs.oracle.com/en-us/iaas/tools/terraform-provider-oci/7.20.0/docs/r/database_database.html)
 
 ### <a name="pluggable-databases">Pluggable Databases</a>
-- pluggable_databases_config: OCI Pluggable Database Configuration. This is a map of PDB configurations.
+- pluggable_databases_configuration: OCI Pluggable Database Configuration. This is a map of PDB configurations.
 
 Each PDB Configuration object has the following attributes:
 - container_database_id: The OCID or key of the CDB.
