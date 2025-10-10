@@ -104,7 +104,6 @@ cloud_vm_clusters_configuration = {
     is_sparse_diskgroup_enabled = true
 
     # ---- software & identity ----
-    gi_version      = "19.28.0.0.0"
     gi_version      = "23.0.0.0"
     system_version  = "25.1.6.0.0.250622"
     hostname        = "abc"
