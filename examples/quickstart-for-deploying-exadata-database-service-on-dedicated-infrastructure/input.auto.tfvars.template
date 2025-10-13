@@ -149,7 +149,6 @@ cloud_db_homes_configuration = {
     display_name   = "EXA-DB-HOME-1"
     db_version     = "19.0.0.0"
     description    = "DB Home Config" # optional
-    source         = "VM_CLUSTER_NEW" # optional (default = VM_CLUSTER_NEW)
 
     defined_tags                = {}                # optional
     freeform_tags               = { "env" = "dev" } # optional

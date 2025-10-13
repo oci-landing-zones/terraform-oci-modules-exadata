@@ -176,7 +176,6 @@ cloud_db_homes_configuration = {
     display_name   = "DBHome01"
     db_version     = "19.0.0.0"
     description    = "DB Home Config" # optional
-    source         = "VM_CLUSTER_NEW" # optional (default = VM_CLUSTER_NEW)
 
     database_software_image_id  = null              # optional custom DB software image
     db_system_id                = null              # optional, only if source = NONE or DB_BACKUP
