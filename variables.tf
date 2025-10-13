@@ -226,7 +226,7 @@ variable "cloud_db_homes_configuration" {
     is_unified_auditing_enabled = optional(bool)
     kms_key_id                  = optional(string)
     kms_key_version_id          = optional(string)
-    source                      = optional(string, "NONE") # Valid values: "NONE", "DB_BACKUP", "VM_CLUSTER_NEW"
+    source                      = optional(string, "VM_CLUSTER_NEW") # Valid values: "NONE", "DB_BACKUP", "VM_CLUSTER_NEW"
     vm_cluster_id               = optional(string)
     database = optional(map(object({
       admin_password             = string
