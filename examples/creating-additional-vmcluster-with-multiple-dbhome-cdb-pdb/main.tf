@@ -13,5 +13,4 @@ module "vision_exadata" {
   default_defined_tags                        = var.default_defined_tags
   default_freeform_tags                       = var.default_freeform_tags
   databases_configuration                     = var.databases_configuration
-  #pluggable_databases_configuration    = var.pluggable_databases_configuration
 }
