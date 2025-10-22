@@ -42,7 +42,17 @@ Before deploying the Exadata Cloud Infrastructure, VM Cluster, Database Home, Da
   Ensure you have access to an active OCI Tenancy with sufficient permissions to create networking and database resources.
 
 - [**Virtual Cloud Network (VCN)**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm#top)  
-  A VCN must be created in the target region where the Exadata Infrastructure will reside.
+  A VCN must be created in the target region where the Exadata Infrastructure will reside. 
+  You can create the VCN and associated subnets in one of the following ways:
+
+  1. **Using the OCI Core Landing Zone Template**  
+     Visit the [OCI Core Landing Zone GitHub repository](https://github.com/oci-landing-zones/terraform-oci-core-landingzone/tree/main/templates/standalone-three-tier-vcn-custom).  
+     - Scroll down to the **“Deploy to Oracle Cloud”** section.  
+     - Click **Deploy to Oracle Cloud** to launch Resource Manager (RMS).  
+     - In the RMS stack, select **Exadata VCN** to deploy the VCN configuration suitable for Exadata environments.
+
+  2. **Using the OCI Console**  
+     Follow the [VCN creation guide](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm#top) to manually create the network components.
 
 - [**Subnets**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_subnet.htm#top)  
   You must have at least two subnets available for Exadata infrastructure and VM clusters:
