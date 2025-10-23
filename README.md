@@ -41,6 +41,9 @@ Before deploying the Exadata Cloud Infrastructure, VM Cluster, Database Home, Da
 - [**IAM Policies**](https://docs.oracle.com/en-us/iaas/exadatacloud/doc/ecs-policy-details.html)  
   Ensure you have access to an active OCI Tenancy with sufficient permissions to create networking and database resources.
 
+- [**Create RSA keys**](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/tutorials/tf-provider.htm#prepare)  
+  Follow [this guide](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/tutorials/tf-provider.htm#prepare) to Create RSA keys.
+
 - [**Virtual Cloud Network (VCN)**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm#top)  
   A VCN must be created in the target region where the Exadata Infrastructure will reside. 
   You can create the VCN and associated subnets in one of the following ways:

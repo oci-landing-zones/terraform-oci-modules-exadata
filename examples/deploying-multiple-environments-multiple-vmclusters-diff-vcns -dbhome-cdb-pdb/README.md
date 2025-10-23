@@ -28,6 +28,9 @@ See [Module's README.md](../../README.md) for overall attributes usage.
 ## Using this example
 1. Rename *input.auto.tfvars.template* to *<project-name>.auto.tfvars*, where *<project-name>* is any name of choice. 
 2. Within *\<project-name\>.auto.tfvars*, provide tenancy connectivity information and adjust the input variables marked with *<REPLACE-WITH-...>*.
+
+   Follow [this guide](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/tutorials/tf-provider.htm#prepare) to Gather Required Information.
+
 3. In this folder, run the typical Terraform workflow:
 ```
 terraform init
