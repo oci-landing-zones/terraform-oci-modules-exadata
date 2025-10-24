@@ -18,9 +18,6 @@
 1. [Known Issues](#known-issues)
 
 
-## <a name="early-preview">Early Preview Disclaimer</a>
-This is an early preview version. It is still under development, with on-going testing and validation. As such, it may contain bugs, incomplete features, and unexpected behavior. This is NOT intended for production use.
-
 ## <a name="overview">Overview</a>
 This repository contains Terraform OCI (Oracle Cloud Infrastructure) modules for resources that help customers deploy and manage Exadata Database Service on Dedicated Infrastructure on OCI.
 
