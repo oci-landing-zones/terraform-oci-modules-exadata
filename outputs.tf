@@ -11,17 +11,17 @@ output "cloud_vm_clusters" {
   value       = var.enable_output ? oci_database_cloud_vm_cluster.these : null
 }
 
-output "database_home" {
+output "database_homes" {
   description = "The deployed Databases Homes in the OCI Database Service."
   value       = var.enable_output ? oci_database_db_home.these : null
 }
 
-output "database" {
+output "databases" {
   description = "The deployed Databases in the OCI Database Service."
   value       = var.enable_output ? oci_database_database.these : null
 }
 
-output "pluggable_database" {
+output "pluggable_databases" {
   description = "The deployed Pluggable Databases in the OCI Database Service."
   value       = var.enable_output ? oci_database_pluggable_database.these : null
 }

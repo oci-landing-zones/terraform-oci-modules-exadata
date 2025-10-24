@@ -48,7 +48,7 @@ default_compartment_id = "CMP-1"
 default_freeform_tags  = {}
 default_defined_tags   = {}
 
-cloud_exadata_infrastructures = {
+cloud_exadata_infrastructures_configuration = {
   default_maintenance_window = {
     preference                    = "NO_PREFERENCE"
     months                        = ["JANUARY"]
@@ -57,7 +57,7 @@ cloud_exadata_infrastructures = {
     hours_of_day                  = [0, 4]
   }
 
-  cloud_exadata_infrastructure_configuration = {
+  cloud_exadata_infrastructures = {
     "My-Exadata-Infra-1" = {
       display_name = "My-Exadata-Infra-1"
       shape        = "Exadata.X11M"
@@ -89,7 +89,7 @@ cloud_exadata_infrastructures = {
 }
 
 
-cloud_vm_clusters = {
+cloud_vm_clusters_configuration = {
 
   # ----------------------------
   # This is to create the first VM Cluster 
@@ -120,7 +120,6 @@ cloud_vm_clusters = {
     is_sparse_diskgroup_enabled = true
 
     # ---- software & identity ----
-    gi_version      = "19.27.0.0.0"
     gi_version      = "23.0.0.0"
     system_version  = "25.1.6.0.0.250622"
     hostname        = "abc"
@@ -202,7 +201,6 @@ cloud_vm_clusters = {
     is_sparse_diskgroup_enabled = true
 
     # ---- software & identity ----
-    gi_version      = "19.27.0.0.0"
     gi_version      = "23.0.0.0"
     system_version  = "25.1.6.0.0.250622"
     hostname        = "abc"
@@ -258,7 +256,7 @@ cloud_vm_clusters = {
 
 
 
-cloud_db_homes = {
+cloud_db_homes_configuration = {
   "DB-HOME-1" = {
     # ----------------------------
     # This is to create the first Database Home in VM Cluster1 
@@ -267,7 +265,6 @@ cloud_db_homes = {
     display_name  = "MyDBHome1"
     db_version    = "19.0.0.0"
     description   = "DB Home Config"  # optional
-    source        = "VM_CLUSTER_NEW"  # optional (default = VM_CLUSTER_NEW)
     defined_tags  = {}                # optional
     freeform_tags = { "env" = "dev" } # optional
   }
@@ -293,7 +290,7 @@ cloud_db_homes = {
 # The strong admin_password below satisfies the policy defined in variables.tf:
 # - Length 9-30, at least 2 uppercase, 2 lowercase, 2 digits, 2 special chars from _, #, -
 # - Only allowed characters, and must not contain 'oracle' (or reverse), 'sys', 'system', 'metsys'
-databases_config = {
+databases_configuration = {
 
   # ----------------------------
   # This is to create the CDB1 and PDB1A in DBHome1 
@@ -452,7 +449,7 @@ databases_config = {
 # ---------------------------------------
 # This is to create additional PDB(s) 
 # ---------------------------------------
-pluggable_databases_config = {
+pluggable_databases_configuration = {
 
   # ---------------------------------------
   # the is to create additional PDB(s) in CDB1

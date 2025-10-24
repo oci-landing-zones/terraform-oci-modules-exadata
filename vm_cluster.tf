@@ -3,7 +3,7 @@
 
 locals {
 
-  cloud_vm_clusters = { for vm_key, vm in coalesce(var.cloud_vm_clusters, {}) : vm_key => merge(vm, {
+  cloud_vm_clusters = { for vm_key, vm in coalesce(var.cloud_vm_clusters_configuration, {}) : vm_key => merge(vm, {
     exadata_infra_id = can(regex("^ocid1\\.cloudexadatainfrastructure.", vm.exadata_infrastructure_id)) ? vm.exadata_infrastructure_id : try(oci_database_cloud_exadata_infrastructure.these[vm.exadata_infrastructure_id].id, null)
     compartment_id = vm.compartment_id != null ? (
       can(regex("^ocid1\\.compartment", vm.compartment_id)) ? vm.compartment_id : try(var.compartments_dependency[vm.compartment_id].id, null)) : try(oci_database_cloud_exadata_infrastructure.these[vm.exadata_infrastructure_id].id, (

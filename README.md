@@ -41,8 +41,21 @@ Before deploying the Exadata Cloud Infrastructure, VM Cluster, Database Home, Da
 - [**IAM Policies**](https://docs.oracle.com/en-us/iaas/exadatacloud/doc/ecs-policy-details.html)  
   Ensure you have access to an active OCI Tenancy with sufficient permissions to create networking and database resources.
 
+- [**Create RSA keys**](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/tutorials/tf-provider.htm#prepare)  
+  Follow [this guide](https://docs.oracle.com/en-us/iaas/Content/dev/terraform/tutorials/tf-provider.htm#prepare) to Create RSA keys.
+
 - [**Virtual Cloud Network (VCN)**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm#top)  
-  A VCN must be created in the target region where the Exadata Infrastructure will reside.
+  A VCN must be created in the target region where the Exadata Infrastructure will reside. 
+  You can create the VCN and associated subnets in one of the following ways:
+
+  1. **Using the OCI Core Landing Zone Template**  
+     Visit the [OCI Core Landing Zone GitHub repository](https://github.com/oci-landing-zones/terraform-oci-core-landingzone/tree/main/templates/standalone-three-tier-vcn-custom).  
+     - Scroll down to the **“Deploy to Oracle Cloud”** section.  
+     - Click **Deploy to Oracle Cloud** to launch Resource Manager (RMS).  
+     - In the RMS stack, select **Exadata VCN** to deploy the VCN configuration suitable for Exadata environments.
+
+  2. **Using the OCI Console**  
+     Follow the [VCN creation guide](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_vcn.htm#top) to manually create the network components.
 
 - [**Subnets**](https://docs.oracle.com/en-us/iaas/Content/Network/Tasks/create_subnet.htm#top)  
   You must have at least two subnets available for Exadata infrastructure and VM clusters:
@@ -77,9 +90,9 @@ The module accepts the following input variables:
 - default_freeform_tags: Default freeform tags for all resources.
 
 ### <a name="cloud-exadata-infrastructures">Cloud Exadata Infrastructures</a>
-- cloud_exadata_infrastructures: Exadata infrastructure configuration. This is an object with the following attributes:
+- cloud_exadata_infrastructures_configuration: Exadata infrastructure configuration. This is an object with the following attributes:
   - default_maintenance_window: Default maintenance window configuration.
-  - cloud_exadata_infrastructure_configuration: A map of Exadata infrastructure configurations.
+  - cloud_exadata_infrastructures: A map of Exadata infrastructure configurations.
 
 Each Exadata infrastructure configuration object has the following attributes:
 
@@ -87,7 +100,7 @@ Each Exadata infrastructure configuration object has the following attributes:
 - shape: Shape of the Exadata infrastructure. Accepted values are Exadata.X11M, Exadata.X9M, and Exadata.X8M.
 - compartment_id: Compartment ID of the Exadata infrastructure. Overrides default compartment ID.
 - availability_domain: Availability domain of the Exadata infrastructure.
-compute_count: Compute count of the Exadata infrastructure.
+- compute_count: Compute count of the Exadata infrastructure.
 - customer_contacts: Customer contact information.
 - database_server_type: Database server type. Accepted values are X11M-BASE, X11M, X11M-L, and X11M-XL.
 - defined_tags: Defined tags for the Exadata infrastructure.
@@ -95,14 +108,13 @@ compute_count: Compute count of the Exadata infrastructure.
 - maintenance_window: Maintenance window configuration.
 - storage_count: Storage count of the Exadata infrastructure.
 - storage_server_type: Storage server type. Accepted values are X11M-BASE and X11M-HC.
-subscription_id: Subscription ID of the Exadata infrastructure.
 - subscription_id: Subscription ID of the Exadata infrastructure.
 
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_cloud_exadata_infrastructure](https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/database_cloud_exadata_infrastructure)
 
 
 ### <a name="cloud-vm-clusters">Cloud VM Clusters</a>
-- cloud_vm_clusters: OCI Database Cloud Exadata VM Cluster Configuration. This is a map of VM cluster configurations.
+- cloud_vm_clusters_configuration: OCI Database Cloud Exadata VM Cluster Configuration. This is a map of VM cluster configurations.
 
 Each Cloud VM cluster configuration object has the following attributes:
 - backup_subnet_id: Backup subnet ID of the VM cluster.
@@ -175,7 +187,7 @@ For more details on this resource, please see OCI Terraform Documentation for [o
 
 
 ### <a name="databases">Databases</a>
-- databases_config: OCI Container Database Configuration. This is a map of database configurations. 
+- databases_configuration: OCI Container Database Configuration. This is a map of database configurations. 
 
 Each Database Configuration object has the following attributes:
 - database: Details for creating a database.
@@ -194,7 +206,7 @@ These attributes are not updatable after initial resource creation:
 For more details on this resource, please see OCI Terraform Documentation for [oci_database_database](https://docs.oracle.com/en-us/iaas/tools/terraform-provider-oci/7.20.0/docs/r/database_database.html)
 
 ### <a name="pluggable-databases">Pluggable Databases</a>
-- pluggable_databases_config: OCI Pluggable Database Configuration. This is a map of PDB configurations.
+- pluggable_databases_configuration: OCI Pluggable Database Configuration. This is a map of PDB configurations.
 
 Each PDB Configuration object has the following attributes:
 - container_database_id: The OCID or key of the CDB.

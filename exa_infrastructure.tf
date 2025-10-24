@@ -6,7 +6,7 @@
 # NOTE!!! Note that the order of the results returned can change if availability domains are added or removed; 
 # therefore, do not create a dependency on the list order.
 data "oci_identity_availability_domains" "ads" {
-  for_each = var.cloud_exadata_infrastructures != null ? var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration != null ? var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration : {} : {}
+  for_each = var.cloud_exadata_infrastructures_configuration != null ? var.cloud_exadata_infrastructures_configuration.cloud_exadata_infrastructures != null ? var.cloud_exadata_infrastructures_configuration.cloud_exadata_infrastructures : {} : {}
   compartment_id = each.value.compartment_id != null ? (
     length(regexall("^ocid1.*$", each.value.compartment_id)) > 0 ? each.value.compartment_id : var.compartments_dependency[each.value.compartment_id].id
     ) : (
@@ -15,7 +15,7 @@ data "oci_identity_availability_domains" "ads" {
 
 
 resource "oci_database_cloud_exadata_infrastructure" "these" {
-  for_each = var.cloud_exadata_infrastructures != null ? var.cloud_exadata_infrastructures.cloud_exadata_infrastructure_configuration : {}
+  for_each = var.cloud_exadata_infrastructures_configuration != null ? var.cloud_exadata_infrastructures_configuration.cloud_exadata_infrastructures : {}
 
   display_name = each.value.display_name
   shape        = each.value.shape
@@ -39,7 +39,7 @@ resource "oci_database_cloud_exadata_infrastructure" "these" {
   freeform_tags        = merge(each.value.freeform_tags != null ? each.value.freeform_tags : var.default_freeform_tags)
 
   dynamic "maintenance_window" {
-    for_each = each.value.maintenance_window != null ? [each.value.maintenance_window] : var.cloud_exadata_infrastructures.default_maintenance_window != null ? [var.cloud_exadata_infrastructures.default_maintenance_window] : []
+    for_each = each.value.maintenance_window != null ? [each.value.maintenance_window] : var.cloud_exadata_infrastructures_configuration.default_maintenance_window != null ? [var.cloud_exadata_infrastructures_configuration.default_maintenance_window] : []
     content {
       custom_action_timeout_in_mins = try(maintenance_window.value.custom_action_timeout_in_mins, null)
       dynamic "days_of_week" {

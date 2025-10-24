@@ -49,126 +49,8 @@ default_compartment_id = "CMP-1"
 default_freeform_tags  = {}
 default_defined_tags   = {}
 
-cloud_exadata_infrastructures = {
-  default_maintenance_window = {
-    preference                    = "NO_PREFERENCE"
-    months                        = ["JANUARY"]
-    weeks_of_month                = [2]
-    days_of_week                  = ["Monday"]
-    hours_of_day                  = [0, 4]
-  }
 
-  cloud_exadata_infrastructure_configuration = {
-    "My-Exadata-Infra-1" = {
-      display_name = "My-Exadata-Infra-1"
-      shape        = "Exadata.X11M"
-
-      compute_count = 2
-      storage_count = 3
-      customer_contacts = {
-        email = "example2@oracle.com"
-      }
-      customer_contacts = {
-        email = "example2@oracle.com"
-      }
-      database_server_type = "X11M"
-      maintenance_window = {
-        preference                       = "CUSTOM_PREFERENCE"
-        is_custom_action_timeout_enabled = false
-        custom_action_timeout_in_mins    = 20
-        days_of_week                     = ["MONDAY"]
-        hours_of_day                     = [2]
-        lead_time_in_weeks               = 2
-        months                           = ["FEBRUARY", "MAY", "AUGUST", "NOVEMBER"]
-        weeks_of_month                   = [1]
-        pathing_mode                     = "ROLLING"
-      }
-
-      storage_server_type = "X11M-HC"
-      # subscription_id     = "SUB-1"
-    }
-  }
-}
-
-
-cloud_vm_clusters = {
-
-  PROD-EXA1-CL01-KEY = {
-    compartment_id            = "CMP-1"
-    display_name              = "My-VMCluster-2"
-    exadata_infrastructure_id = "My-Exadata-Infra-3"
-
-    # ---- networking----
-    subnet_id              = "EXA-SUBNET-KEY"            ## "ocid1.subnet.oc1.."
-    backup_subnet_id       = "EXA-BACKUP-SUBNET-KEY"     ## "ocid1.subnet.oc1.."
-    nsg_ids                = ["NSG-EXA-CLIENT-KEY"]
-    backup_network_nsg_ids = ["NSG-EXA-BACKUP-KEY"]
-
-    # ---- sizing ----
-    cpu_core_count = 16
-
-    scan_listener_port_tcp     = 1521
-    scan_listener_port_tcp_ssl = 2484
-
-    is_local_backup_enabled     = true
-    is_sparse_diskgroup_enabled = true
-
-    # ---- software & identity ----
-    gi_version      = "19.27.0.0.0"
-    gi_version      = "23.0.0.0"
-    system_version  = "25.1.6.0.0.250622"
-    hostname        = "abc"
-    cluster_name    = "clust02"
-    ssh_public_keys = ["<REPLACE WITH SSH PUBLIC KEY>"]
-    license_model   = "LICENSE_INCLUDED"
-
-    # ---- optional extras ----
-    is_local_backup_enabled = true
-    time_zone               = "UTC"
-
-    # ================================
-    # Automation update Details
-    # ================================
-    cloud_automation_update_details = {
-      #Optional
-      apply_update_time_preference = {
-        apply_update_preferred_end_time   = "06:00"
-        apply_update_preferred_start_time = "00:00"
-      }
-      freeze_period = {
-        freeze_period_end_time   = "2025-10-05"
-        freeze_period_start_time = "2025-10-01"
-      }
-      is_early_adoption_enabled = false
-      is_freeze_period_enabled  = true
-    }
-
-    # Data Collection options
-    data_collection_options = {
-      is_diagnostics_events_enabled = false
-      is_health_monitoring_enabled  = false
-      is_incident_logs_enabled      = false
-    }
-
-    # file system config
-    file_system_configuration_details = {
-      "U01" = {
-        file_system_size_gb = 27
-        mount_point         = "/u01"
-      },
-      "HOME" = {
-        file_system_size_gb = 17
-        mount_point         = "/home"
-      }
-      "VAR" = {
-        file_system_size_gb = 7
-        mount_point         = "/var"
-      }
-    }
-  }
-}
-
-cloud_db_homes = {
+cloud_db_homes_configuration = {
   "dbhome1" = {
     # ----------------------------
     # Create Database Home on an existing VM Cluster
@@ -177,7 +59,6 @@ cloud_db_homes = {
     display_name   = "DBHome01"
     db_version     = "19.0.0.0"
     description    = "DB Home Config" # optional
-    source         = "VM_CLUSTER_NEW" # optional (default = VM_CLUSTER_NEW)
 
     database_software_image_id  = null              # optional custom DB software image
     db_system_id                = null              # optional, only if source = NONE or DB_BACKUP
@@ -198,7 +79,7 @@ cloud_db_homes = {
 # The strong admin_password below satisfies the policy defined in variables.tf:
 # - Length 9-30, at least 2 uppercase, 2 lowercase, 2 digits, 2 special chars from _, #, -
 # - Only allowed characters, and must not contain 'oracle' (or reverse), 'sys', 'system', 'metsys'
-databases_config = {
+databases_configuration = {
   CDB1 = {
     #Required
     source = "NONE"
@@ -343,7 +224,7 @@ databases_config = {
 # ---------------------------------------
 # Additional PDB(s) for CDB1
 # ---------------------------------------
-pluggable_databases_config= {
+pluggable_databases_configuration= {
   PDB1B = {
      container_database_id = "CDB1" #<<Name or OCID>>
      pdb_name              = "PDB1B" #The name for the pluggable database (PDB). The name is unique in the context of a container database. The name must begin with an alphabetic character and can contain a maximum of thirty alphanumeric characters. Special characters are not permitted. The pluggable database name should not be same as the container database name.

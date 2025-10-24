@@ -2,10 +2,10 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 locals {
   cloud_db_homes = {
-    for dbhome_key, dbhome in coalesce(var.cloud_db_homes, {}) :
+    for dbhome_key, dbhome in coalesce(var.cloud_db_homes_configuration, {}) :
     dbhome_key => merge(dbhome, {
       # Resolve VM Cluster ID: use as-is if OCID, or reference created VM cluster by key
-      vm_cluster_id = can(regex("^ocid1\\.vmcluster", dbhome.vm_cluster_id)) ? dbhome.vm_cluster_id : try(oci_database_cloud_vm_cluster.these[dbhome.vm_cluster_id].id, null)
+      vm_cluster_id = can(regex("^ocid1\\.", dbhome.vm_cluster_id)) ? dbhome.vm_cluster_id : try(oci_database_cloud_vm_cluster.these[dbhome.vm_cluster_id].id, null)
     })
   }
 }

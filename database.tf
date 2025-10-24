@@ -7,7 +7,7 @@
 locals {
   # Resolve references and defaults for database creation
   databases = {
-    for key, db in coalesce(var.databases_config, {}) :
+    for key, db in coalesce(var.databases_configuration, {}) :
     key => merge(db, {
       # Resolve DB Home: use as-is if OCID, or reference created DB Home by key
       db_home_id          = can(regex("^ocid1\\.dbhome\\.", db.db_home_id)) ? db.db_home_id : try(oci_database_db_home.these[db.db_home_id].id, null)
