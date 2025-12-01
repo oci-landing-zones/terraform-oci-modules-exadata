@@ -1,4 +1,14 @@
-# Exadata Module Release Notes
+# Database Modules Release Notes
+
+## Dec 1, 2025 Release Notes - 1.0.1
+### Updates 
+1. Restructured Folders to accommodate for Autonomous Database
+2. Updated documentation
+3. Added password validation for all exadata resources.
+4. Update template files to remove unused variables.
+
+### Fixes 
+1. Fix regex matching in exadata-database/pluggable_database to allow matching *ocid1.dbhome*.
 
 ## October 23, 2025 Release Notes - 1.0.0
 1. Initial release of Exadata Database Service Module designed to be used with OCI Landing Zones blueprints.

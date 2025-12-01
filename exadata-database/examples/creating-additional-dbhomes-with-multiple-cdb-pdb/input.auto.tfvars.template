@@ -29,12 +29,6 @@ compartments_dependency = {
   }
 }
 
-subscription_dependency = {
-  SUB-1 = {
-    id = "<REPLACE-WITH-SUBSCRIPTION-ID"
-   }
-}
-
 network_dependency = {
   network_security_groups = {
     "NSG-EXA-CLIENT-KEY" = { id = "<REPLACE-WITH-NSG-OCID>" }

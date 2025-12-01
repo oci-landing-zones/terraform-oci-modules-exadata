@@ -6,7 +6,7 @@ locals {
     for key, pdb in coalesce(var.pluggable_databases_configuration, {}) :
     key => merge(pdb, {
       # Resolve Container Database ID: use as-is if OCID, or reference created container DB by key
-      container_database_id = can(regex("^ocid1\\.dbhome\\.", pdb.container_database_id)) ? pdb.container_database_id : try(oci_database_database.these[pdb.container_database_id].id, null)
+      container_database_id = can(regex("^ocid1\\.(dbhome\\.|database\\.)", pdb.container_database_id)) ? pdb.container_database_id : try(oci_database_database.these[pdb.container_database_id].id, null)
       # Tag defaults
       defined_tags  = try(pdb.defined_tags, var.default_defined_tags)
       freeform_tags = try(pdb.freeform_tags, var.default_freeform_tags)
