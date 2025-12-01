@@ -278,6 +278,36 @@ variable "cloud_db_homes_configuration" {
       vault_id                              = optional(string)
     })))
   }))
+  validation {
+    condition = var.cloud_db_homes_configuration == null ? true : alltrue(flatten([
+      for k, v in var.cloud_db_homes_configuration :
+      [for dk, dv in coalesce(v.database, {}) :
+        dv.admin_password == null ? true : (
+          (can(regex("^[A-Za-z0-9#_-]{9,30}$", dv.admin_password))) &&
+          (length(regexall("[A-Z]", dv.admin_password)) >= 2) &&
+          (length(regexall("[a-z]", dv.admin_password)) >= 2) &&
+          (length(regexall("[0-9]", dv.admin_password)) >= 2) &&
+          (length(regexall("[#_-]", dv.admin_password)) >= 2)
+        )
+      ]
+    ]))
+    error_message = "The admin password needs to contain 2 uppercase, 2 lowercase, 2 numbers, 2 special chars (#, _, -), and minimum 9 to 30 characters."
+  }
+  validation {
+    condition = var.cloud_db_homes_configuration == null ? true : alltrue(flatten([
+      for k, v in var.cloud_db_homes_configuration :
+      [for dk, dv in coalesce(v.database, {}) :
+        dv.tde_wallet_password == null ? true : (
+          (can(regex("^[A-Za-z0-9#_-]{9,30}$", dv.tde_wallet_password))) &&
+          (length(regexall("[A-Z]", dv.tde_wallet_password)) >= 2) &&
+          (length(regexall("[a-z]", dv.tde_wallet_password)) >= 2) &&
+          (length(regexall("[0-9]", dv.tde_wallet_password)) >= 2) &&
+          (length(regexall("[#_-]", dv.tde_wallet_password)) >= 2)
+        )
+      ]
+    ]))
+    error_message = "The tde wallet password needs to contain 2 uppercase, 2 lowercase, 2 numbers, 2 special characters (#, _, -), and length of 9 to 30 characters."
+  }
 }
 
 variable "databases_configuration" {
@@ -346,6 +376,40 @@ variable "databases_configuration" {
     kms_key_id         = optional(string)
     kms_key_version_id = optional(string)
   }))
+  validation {
+    condition = var.databases_configuration == null ? true : alltrue([
+      for k, v in var.databases_configuration :
+      (length(v.database.db_name) <= 8 && length(regexall("^[A-Za-z]", v.database.db_name)) > 0 && can(regex("^[a-zA-Z0-9_]*$", v.database.db_name)))
+    ])
+    error_message = "The database name should start with an alphabetical character and have a maximum of 8 characters. Special characters are not permitted."
+  }
+  validation {
+    condition = var.databases_configuration == null ? true : alltrue([
+      for k, v in var.databases_configuration :
+      v.database.admin_password == null ? true : (
+        (can(regex("^[A-Za-z0-9#_-]{9,30}$", v.database.admin_password))) &&
+        (length(regexall("[A-Z]", v.database.admin_password)) >= 2) &&
+        (length(regexall("[a-z]", v.database.admin_password)) >= 2) &&
+        (length(regexall("[0-9]", v.database.admin_password)) >= 2) &&
+        (length(regexall("[#_-]", v.database.admin_password)) >= 2)
+      )
+    ])
+    error_message = "The admin password needs to contain 2 uppercase, 2 lowercase, 2 numbers, 2 special characters (#, _, -), and length of 9 to 30 characters."
+  }
+
+  validation {
+    condition = var.databases_configuration == null ? true : alltrue([
+      for k, v in var.databases_configuration :
+      v.database.tde_wallet_password == null ? true : (
+        (can(regex("^[A-Za-z0-9#_-]{9,30}$", v.database.tde_wallet_password))) &&
+        (length(regexall("[A-Z]", v.database.tde_wallet_password)) >= 2) &&
+        (length(regexall("[a-z]", v.database.tde_wallet_password)) >= 2) &&
+        (length(regexall("[0-9]", v.database.tde_wallet_password)) >= 2) &&
+        (length(regexall("[#_-]", v.database.tde_wallet_password)) >= 2)
+      )
+    ])
+    error_message = "The tde wallet password needs to contain 2 uppercase, 2 lowercase, 2 numbers, 2 special characters (#, _, -), and length of 9 to 30 characters."
+  }
 }
 
 variable "pluggable_databases_configuration" {
@@ -375,4 +439,31 @@ variable "pluggable_databases_configuration" {
     should_pdb_admin_account_be_locked = optional(bool)
     tde_wallet_password                = optional(string)
   }))
+  validation {
+    condition = var.pluggable_databases_configuration == null ? true : alltrue([
+      for k, v in var.pluggable_databases_configuration :
+      v.pdb_admin_password == null ? true : (
+        (can(regex("^[A-Za-z0-9#_-]{9,30}$", v.pdb_admin_password))) &&
+        (length(regexall("[A-Z]", v.pdb_admin_password)) >= 2) &&
+        (length(regexall("[a-z]", v.pdb_admin_password)) >= 2) &&
+        (length(regexall("[0-9]", v.pdb_admin_password)) >= 2) &&
+        (length(regexall("[#_-]", v.pdb_admin_password)) >= 2)
+      )
+    ])
+    error_message = "The pdb admin password needs to contain 2 uppercase, 2 lowercase, 2 numbers, 2 special characters (#, _, -), and length of 9 to 30 characters."
+  }
+
+  validation {
+    condition = var.pluggable_databases_configuration == null ? true : alltrue([
+      for k, v in var.pluggable_databases_configuration :
+      v.tde_wallet_password == null ? true : (
+        (can(regex("^[A-Za-z0-9#_-]{9,30}$", v.tde_wallet_password))) &&
+        (length(regexall("[A-Z]", v.tde_wallet_password)) >= 2) &&
+        (length(regexall("[a-z]", v.tde_wallet_password)) >= 2) &&
+        (length(regexall("[0-9]", v.tde_wallet_password)) >= 2) &&
+        (length(regexall("[#_-]", v.tde_wallet_password)) >= 2)
+      )
+    ])
+    error_message = "The tde wallet password needs to contain 2 uppercase, 2 lowercase, 2 numbers, 2 special characters (#, _, -), and length of 9 to 30 characters."
+  }
 }
