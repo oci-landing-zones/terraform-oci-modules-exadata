@@ -60,7 +60,7 @@ resource "oci_database_db_home" "these" {
 
       # Backup Config
       dynamic "db_backup_config" {
-        for_each = lookup(database.value, "db_backup_config", [])
+        for_each = lookup(database, "db_backup_config", [])
 
         content {
           auto_backup_enabled       = lookup(db_backup_config.value, "auto_backup_enabled", null)
@@ -93,7 +93,7 @@ resource "oci_database_db_home" "these" {
       vault_id            = lookup(database.value, "vault_id", null)
 
       dynamic "encryption_key_location_details" {
-        for_each = lookup(database.value, "encryption_key_location_details", [])
+        for_each = lookup(database, "encryption_key_location_details", [])
 
         content {
           provider_type           = lookup(encryption_key_location_details.value, "provider_type", null)
