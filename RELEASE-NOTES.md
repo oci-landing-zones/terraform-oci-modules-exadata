@@ -1,4 +1,7 @@
 # Database Modules Release Notes
+# Jan 29, 2025 Release Notes - 1.1.0
+### Module Added
+1. Added Autonomous Database Module
 
 ## Dec 1, 2025 Release Notes - 1.0.1
 ### Updates 
