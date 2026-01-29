@@ -1,0 +1,52 @@
+#---------------------------------------
+# Tenancy Connectivity Variables
+#---------------------------------------
+
+tenancy_ocid         = "ocid1.tenancy.xxx" # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "Tenancy: <your tenancy name>").
+user_ocid            = "ocid1.user.xxx"    # Get this from OCI Console (after logging in, go to top-right-most menu item and click option "My profile").
+fingerprint          = ""                                 # The fingerprint can be gathered from your user account. In the "My profile page, click "API keys" on the menu in left hand side.
+private_key_path     = ""                                                                  # This is the full path on your local system to the API signing private key.
+private_key_password = ""                                                                                # This is the password that protects the private key, if any.
+region               = ""
+
+autonomous_databases_configuration = {
+  default_compartment_id = "<REPLACE-WITH-OCID>"
+
+  databases = {
+    TEST-ATP = {
+      db_name                         = "VisionTestATP02"
+      admin_password                  = "<REPLACE-WITH-STRONG-PASSWORD>"
+      db_workload                     = "DW"
+      is_dedicated                    = false
+      networking = {
+        subnet_id               = "CLIENT-SUBNET"
+        enable_private_endpoint = true
+        private_endpoint_ip     = "172.16.0.0/20"
+      }
+      security = {
+        tde = {
+          existing_oci_vault_id          = "CUSTOM-VAULT"
+          existing_oci_encryption_key_id = "CUSTOM-KEY"
+          deploy_new_oci_encryption_key  = false
+        }
+      }
+    }
+  }
+}
+
+kms_dependency = {
+  CUSTOM-VAULT = {
+    id = "<REPLACE-WITH-OCID>"
+  }
+  CUSTOM-KEY = {
+    id = "<REPLACE-WITH-OCID>"
+  }
+}
+
+network_dependency = {
+  subnets = {
+    CLIENT-SUBNET = {
+      id = "<REPLACE-WITH-OCID>"
+    }
+  }
+}
